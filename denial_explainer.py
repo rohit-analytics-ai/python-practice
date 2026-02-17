@@ -1,10 +1,18 @@
-import argparse
-import json
-import os
-from anthropic import Anthropic
+# ===== IMPORTS (tools we borrow) =====
 
-MODEL = "claude-sonnet-4-5"
+import argparse      # lets us pass arguments from terminal (like --input file.json)
+import json          # lets us read/write JSON data
+import os            # lets us access environment variables (API key)
+from anthropic import Anthropic   # official Claude API client
 
+
+# ===== SETTINGS / CONSTANTS =====
+# These are values we may want to change later.
+
+MODEL = "claude-sonnet-4-5"   # which Claude model to use
+
+# System prompt = "boss instructions" for Claude
+# These rules guide how Claude behaves.
 SYSTEM_PROMPT = """You are a healthcare claims denial explainer for US health insurance.
 You must be accurate, conservative, and safe.
 
@@ -15,6 +23,10 @@ Rules:
 - The first character of your entire response must be { and the last character must be }.
 - Keep language plain and member-friendly.
 """
+
+
+# ===== BUILD THE USER PROMPT =====
+# This function builds the actual question Claude receives.
 
 def build_user_prompt(payload: dict) -> str:
     return f"""Explain this claim denial in plain language and suggest next steps.
@@ -45,13 +57,18 @@ Constraints:
 - risk_warnings must be 3 items max.
 """
 
+
+# ===== EXTRACT JSON SAFELY =====
+# Claude sometimes adds extra text.
+# This function pulls only the JSON part.
+
 def extract_json(text: str) -> str:
     if not text:
         return ""
 
     t = text.strip()
 
-    # Remove fenced code blocks if present
+    # Remove ``` code fences if Claude added them
     if t.startswith("```"):
         first_newline = t.find("\n")
         if first_newline != -1:
@@ -59,7 +76,7 @@ def extract_json(text: str) -> str:
         if t.endswith("```"):
             t = t[:-3].strip()
 
-    # Extract JSON object between first { and last }
+    # Extract text between first { and last }
     start = t.find("{")
     end = t.rfind("}")
     if start == -1 or end == -1 or end <= start:
@@ -67,18 +84,31 @@ def extract_json(text: str) -> str:
 
     return t[start : end + 1]
 
+
+# ===== LOAD INPUT FILE =====
+# Reads JSON file and converts to Python dictionary.
+
 def load_input(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
+
+# ===== MAIN PROGRAM =====
+
 def main():
+
+    # Get API key from environment variable (secure)
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
         raise SystemExit("ANTHROPIC_API_KEY not set.")
 
+
+    # Allow command-line input
     parser = argparse.ArgumentParser(description="Claude-powered healthcare denial explainer (MVP).")
     parser.add_argument("--input", type=str, default="", help="Path to a JSON file (e.g., samples/denial_1.json)")
     args = parser.parse_args()
+
+    # Decide where denial input comes from
 
     if args.input:
         denial_input = load_input(args.input)
@@ -91,7 +121,10 @@ def main():
             "dates": {"service_date": "2026-02-01"},
         }
 
+    # Create Claude client
     client = Anthropic(api_key=api_key)
+
+    # Send prompt to Claude
     resp = client.messages.create(
         model=MODEL,
         max_tokens=900,
@@ -100,6 +133,7 @@ def main():
     )
 
     # Robust extraction across SDK versions: take any block that has .text
+    # Extract text from Claude response blocks
     text_parts = []
     for block in resp.content:
         txt = getattr(block, "text", None)
@@ -115,6 +149,7 @@ def main():
             "Increase max_tokens or shorten constraints."
         )
 
+    # Extract JSON portion
     json_text = extract_json(text)
     if not json_text:
         print("\n--- RAW MODEL OUTPUT START ---\n")
@@ -122,6 +157,7 @@ def main():
         print("\n--- RAW MODEL OUTPUT END ---\n")
         raise SystemExit("Could not find a JSON object in model output.")
 
+    # Convert JSON string → Python dictionary
     try:
         data = json.loads(json_text)
     except json.JSONDecodeError as e:
@@ -133,6 +169,7 @@ def main():
         print("\n--- EXTRACTED JSON END ---\n")
         raise SystemExit(f"JSON parse error: {e}")
 
+    # Print clean formatted output
     print(json.dumps(data, indent=2))
 
 if __name__ == "__main__":
