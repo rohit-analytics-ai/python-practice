@@ -1,0 +1,7 @@
+{
+  "payer": "Example Health Plan",
+  "denial_code_or_reason": "Member not eligible on date of service",
+  "member_context": "Routine specialist visit",
+  "provider_context": "Office visit claim submitted",
+  "dates": {"service_date": "2026-02-05"}
+}

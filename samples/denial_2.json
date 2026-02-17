@@ -1,0 +1,7 @@
+{
+  "payer": "Example Health Plan",
+  "denial_code_or_reason": "Prior authorization required",
+  "member_context": "Outpatient MRI",
+  "provider_context": "Radiology facility billed without auth on file",
+  "dates": {"service_date": "2026-01-18"}
+}

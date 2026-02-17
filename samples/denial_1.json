@@ -1,0 +1,7 @@
+{
+  "payer": "Example Health Plan",
+  "denial_code_or_reason": "Service not medically necessary",
+  "member_context": "Outpatient imaging for back pain",
+  "provider_context": "Ordering physician submitted clinical notes",
+  "dates": {"service_date": "2026-02-01"}
+}
