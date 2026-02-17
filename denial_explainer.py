@@ -1,7 +1,7 @@
+import argparse
 import json
 import os
 from anthropic import Anthropic
-from anthropic.types import TextBlock
 
 MODEL = "claude-sonnet-4-5"
 
@@ -34,8 +34,7 @@ Return JSON with exactly this schema:
 }}
 
 Constraints:
-- Use 5th–8th grade language in plain_english_explanation.
-- Do NOT use words like 5th–8th grade in output.
+- Do NOT use words like "5th grade" or "8th grade" in output.
 - If you are unsure, set confidence=low and list missing_information_needed.
 - Do not mention internal model details.
 - Keep each array to at most 4 items.
@@ -47,13 +46,6 @@ Constraints:
 """
 
 def extract_json(text: str) -> str:
-    """
-    Best-effort extraction of a JSON object from model output.
-    Handles common cases like:
-    - leading/trailing prose
-    - ```json fenced blocks
-    - leading BOM/whitespace
-    """
     if not text:
         return ""
 
@@ -61,15 +53,13 @@ def extract_json(text: str) -> str:
 
     # Remove fenced code blocks if present
     if t.startswith("```"):
-        # Strip first fence line (``` or ```json)
         first_newline = t.find("\n")
         if first_newline != -1:
             t = t[first_newline + 1 :]
-        # Strip closing fence
         if t.endswith("```"):
             t = t[:-3].strip()
 
-    # Find first '{' and last '}' to extract object
+    # Extract JSON object between first { and last }
     start = t.find("{")
     end = t.rfind("}")
     if start == -1 or end == -1 or end <= start:
@@ -77,21 +67,29 @@ def extract_json(text: str) -> str:
 
     return t[start : end + 1]
 
-
+def load_input(path: str) -> dict:
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 def main():
     api_key = os.getenv("ANTHROPIC_API_KEY")
     if not api_key:
         raise SystemExit("ANTHROPIC_API_KEY not set.")
 
-    # Minimal sample input (edit this as you like)
-    denial_input = {
-        "payer": "Example Health Plan",
-        "denial_code_or_reason": "Service not medically necessary",
-        "member_context": "Outpatient imaging for back pain",
-        "provider_context": "Ordering physician submitted clinical notes",
-        "dates": {"service_date": "2026-02-01"},
-    }
+    parser = argparse.ArgumentParser(description="Claude-powered healthcare denial explainer (MVP).")
+    parser.add_argument("--input", type=str, default="", help="Path to a JSON file (e.g., samples/denial_1.json)")
+    args = parser.parse_args()
+
+    if args.input:
+        denial_input = load_input(args.input)
+    else:
+        denial_input = {
+            "payer": "Example Health Plan",
+            "denial_code_or_reason": "Service not medically necessary",
+            "member_context": "Outpatient imaging for back pain",
+            "provider_context": "Ordering physician submitted clinical notes",
+            "dates": {"service_date": "2026-02-01"},
+        }
 
     client = Anthropic(api_key=api_key)
     resp = client.messages.create(
@@ -101,25 +99,21 @@ def main():
         messages=[{"role": "user", "content": build_user_prompt(denial_input)}],
     )
 
-    # Join all text blocks safely (sometimes content has multiple blocks)
+    # Robust extraction across SDK versions: take any block that has .text
     text_parts = []
     for block in resp.content:
-        if isinstance(block, TextBlock):
-            text_parts.append(block.text)
+        txt = getattr(block, "text", None)
+        if isinstance(txt, str) and txt.strip():
+            text_parts.append(txt)
 
     text = "\n".join(text_parts).strip()
-    # Debug output (keep for now)
-    print("\n--- RAW MODEL OUTPUT START ---\n")
-    print(repr(text))
-    print("\n--- RAW MODEL OUTPUT END ---\n")
 
-    # 🔴 Fail fast if Claude output is truncated
+    # Fail fast if output is truncated
     if "}" not in text:
         raise SystemExit(
             "Output appears truncated (missing closing brace). "
             "Increase max_tokens or shorten constraints."
         )
-
 
     json_text = extract_json(text)
     if not json_text:
@@ -131,20 +125,13 @@ def main():
     try:
         data = json.loads(json_text)
     except json.JSONDecodeError as e:
-   
-        DEBUG = False
-        if DEBUG:
-            print("\n--- RAW MODEL OUTPUT START ---\n")
-            print(repr(text))
-            print("\n--- RAW MODEL OUTPUT END ---\n")
-        
-            print("\n--- EXTRACTED JSON START ---\n")
-            print(repr(json_text))
-            print("\n--- EXTRACTED JSON END ---\n")
-            print(f"JSON parse error: {e}")
-            raise
-
-
+        print("\n--- RAW MODEL OUTPUT START ---\n")
+        print(repr(text))
+        print("\n--- RAW MODEL OUTPUT END ---\n")
+        print("\n--- EXTRACTED JSON START ---\n")
+        print(repr(json_text))
+        print("\n--- EXTRACTED JSON END ---\n")
+        raise SystemExit(f"JSON parse error: {e}")
 
     print(json.dumps(data, indent=2))
 
