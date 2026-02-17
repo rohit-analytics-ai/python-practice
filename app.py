@@ -8,6 +8,7 @@ from denial_explainer import build_user_prompt, extract_json, SYSTEM_PROMPT, MOD
 
 st.set_page_config(page_title="Denial Explainer MVP", layout="wide")
 st.title("🧾 Denial Explainer (MVP)")
+st.info("⚠️ Keep responses concise to control API costs.")
 st.caption("Paste a denial input JSON → get structured explanation + appeal guidance (Claude).")
 
 # --- API key check ---
@@ -36,7 +37,11 @@ with col1:
         height=350
     )
 
-    max_tokens = st.slider("Max tokens (cost control)", min_value=200, max_value=1200, value=900, step=50)
+    max_tokens = st.slider("Max tokens (cost control)", 200, 1000, 700, 50)
+    st.caption("Tip: keep max_tokens 400–800 for cheap, fast responses.")
+
+
+ #   max_tokens = st.slider("Max tokens (cost control)", min_value=200, max_value=1200, value=900, step=50)
 
     run_btn = st.button("Run Claude → Explain Denial", type="primary")
 
@@ -54,6 +59,7 @@ if run_btn:
         st.stop()
 
     with st.spinner("Calling Claude..."):
+        
         resp = client.messages.create(
             model=MODEL,
             max_tokens=max_tokens,
@@ -88,3 +94,25 @@ if run_btn:
             st.stop()
 
         output_box.json(data)
+        st.success("Response generated successfully")
+        confidence = data.get("confidence", "").lower()
+
+        if confidence == "high":
+            st.success("Confidence: HIGH")
+        elif confidence == "medium":
+            st.warning("Confidence: MEDIUM")
+        else:
+            st.error("Confidence: LOW — more information may be needed")
+
+    st.download_button(
+        label="📥 Download JSON",
+        data=json.dumps(data, indent=2),
+        file_name="denial_explanation.json",
+        mime="application/json"
+    )
+    st.text_area(
+    "Copy JSON",
+    value=json.dumps(data, indent=2),
+    height=200
+    )
+
