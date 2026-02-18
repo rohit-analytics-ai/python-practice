@@ -1,18 +1,15 @@
 import os
 from anthropic import Anthropic
 
-api_key = os.getenv("ANTHROPIC_API_KEY")
+MODEL = "claude-sonnet-4-5"
 
-if not api_key:
-    raise SystemExit("API key not found.")
-
-client = Anthropic(api_key=api_key)
+client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 response = client.messages.create(
-    model="claude-sonnet-4-5",
-    max_tokens=100,
+    model=MODEL,
+    max_tokens=150,
     messages=[
-        {"role": "user", "content": "Explain Healthcare payer insurance claim denial in simple words."}
+        {"role": "user", "content": "Explain insurance claim denial in simple words."}
     ],
 )
 

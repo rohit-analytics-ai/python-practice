@@ -3,75 +3,12 @@ import os
 import streamlit as st
 from anthropic import Anthropic
 
-def classify_severity(data):
-    explanation = data.get("plain_english_explanation", "").lower()
-    risks = " ".join(data.get("risk_warnings", [])).lower()
-
-    if "full cost" in risks or "responsible" in risks:
-        return "HIGH"
-    if "appeal" in explanation or "denied" in explanation:
-        return "MEDIUM"
-    return "LOW"
-
-
-def generate_appeal_text(data):
-    explanation = data.get("plain_english_explanation", "")
-    causes = data.get("likely_root_causes", [])
-    missing = data.get("missing_information_needed", [])
-    
-    text = f"""To Whom It May Concern,
-
-I am requesting reconsideration of the denial for the referenced service.
-
-Reason provided: {explanation}
-
-Potential issues identified:
-- """ + "\n- ".join(causes)
-
-    if missing:
-        text += "\n\nAdditional documentation can be provided if needed, including:\n- " + "\n- ".join(missing)
-
-    text += "\n\nPlease review this request and advise if further information is required.\n\nSincerely,\nMember/Provider"
-
-    return text
-
-
-
 # Reuse logic from your CLI tool
 from denial_explainer import build_user_prompt, extract_json, SYSTEM_PROMPT, MODEL
 
 st.set_page_config(page_title="Denial Explainer MVP", layout="wide")
-
-st.markdown(
-    """
-    <h1 style='text-align: center; font-size: 42px; margin-bottom: 0;'>
-    🧾 Denial Explainer
-    </h1>
-    <p style='text-align: center; font-size: 18px; color: #555; margin-top: 4px;'>
-    Turn claim denials into clear explanations, appeal guidance, and action steps.
-    </p>
-    """,
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    """
-    <div style="
-        background-color:#f3f6fb;
-        padding:12px 18px;
-        border-radius:10px;
-        text-align:center;
-        font-size:14px;
-        color:#444;
-        margin-top:10px;
-        margin-bottom:20px;
-    ">
-    ⚠️ Guidance is educational. Always verify against payer policy and clinical documentation.
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
+st.title("🧾 Denial Explainer (MVP)")
+st.caption("Paste a denial input JSON → get structured explanation + appeal guidance (Claude).")
 
 # --- Session history (keeps last runs during this browser session) ---
 if "history" not in st.session_state:
@@ -92,23 +29,7 @@ compare_mode = st.checkbox("Compare two denials side-by-side", value=False)
 col1, col2 = st.columns(2)
 
 with col1:
-    
-    st.markdown(
-    """
-    <div style="
-        background-color:#eef2f7;
-        padding:10px 14px;
-        border-radius:8px;
-        font-weight:600;
-        font-size:16px;
-    ">
-    Input (Denial JSON)
-    </div>
-    """,
-    unsafe_allow_html=True
-    )
-
-
+    st.subheader("Input (Denial JSON)")
 
     default_input_1 = {
         "payer": "Example Health Plan",
@@ -177,15 +98,8 @@ def run_one(denial_payload: dict) -> dict:
 
     text = "\n".join(text_parts).strip()
 
-    if "cannot determine" in text.lower() or "insufficient" in text.lower():
-        st.error("Claude indicates insufficient information to provide reliable guidance.")
-        st.divider()
-        st.stop()
-
-
     if "}" not in text:
         raise ValueError("Output looks truncated. Increase max_tokens or shorten constraints.")
-    
 
     json_text = extract_json(text)
     if not json_text:
@@ -262,20 +176,6 @@ if run_btn:
             else:
                 st.error("❗ Confidence: LOW (needs more info)")
 
-            missing = data.get("missing_information_needed", []) or []
-            if missing and confidence == "high":
-                st.warning("⚠️ Confidence adjusted: missing information detected")
-
-
-            severity = classify_severity(data)
-            if severity == "HIGH":
-                st.error("🚨 Severity: HIGH — financial risk likely")
-            elif severity == "MEDIUM":
-                st.warning("⚠️ Severity: MEDIUM — review recommended")
-            else:
-                st.success("✅ Severity: LOW")
-
-
             # Missing info panel
             missing = data.get("missing_information_needed", []) or []
             st.subheader("🧩 Missing Information Needed")
@@ -285,20 +185,6 @@ if run_btn:
                     st.write(f"- {m}")
             else:
                 st.success("No missing information flagged.")
-
-
-            st.subheader("📝 Appeal Letter Draft")
-
-            appeal_text = generate_appeal_text(data)
-
-            st.text_area("Editable draft:", value=appeal_text, height=220)
-
-            st.download_button(
-                label="📥 Download Appeal Letter",
-                data=appeal_text,
-                file_name="appeal_letter.txt"
-            )
-
 
             # Download + Copy
             st.download_button(
