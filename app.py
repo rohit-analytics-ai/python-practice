@@ -3,12 +3,47 @@ import os
 import streamlit as st
 from anthropic import Anthropic
 
+def classify_severity(data):
+    explanation = data.get("plain_english_explanation", "").lower()
+    risks = " ".join(data.get("risk_warnings", [])).lower()
+
+    if "full cost" in risks or "responsible" in risks:
+        return "HIGH"
+    if "appeal" in explanation or "denied" in explanation:
+        return "MEDIUM"
+    return "LOW"
+
+
+def generate_appeal_text(data):
+    explanation = data.get("plain_english_explanation", "")
+    causes = data.get("likely_root_causes", [])
+    missing = data.get("missing_information_needed", [])
+    
+    text = f"""To Whom It May Concern,
+
+I am requesting reconsideration of the denial for the referenced service.
+
+Reason provided: {explanation}
+
+Potential issues identified:
+- """ + "\n- ".join(causes)
+
+    if missing:
+        text += "\n\nAdditional documentation can be provided if needed, including:\n- " + "\n- ".join(missing)
+
+    text += "\n\nPlease review this request and advise if further information is required.\n\nSincerely,\nMember/Provider"
+
+    return text
+
+
+
 # Reuse logic from your CLI tool
 from denial_explainer import build_user_prompt, extract_json, SYSTEM_PROMPT, MODEL
 
 st.set_page_config(page_title="Denial Explainer MVP", layout="wide")
 st.title("🧾 Denial Explainer (MVP)")
 st.caption("Paste a denial input JSON → get structured explanation + appeal guidance (Claude).")
+st.caption("⚠️ Always verify guidance against payer policy and clinical documentation.")
 
 # --- Session history (keeps last runs during this browser session) ---
 if "history" not in st.session_state:
@@ -98,6 +133,11 @@ def run_one(denial_payload: dict) -> dict:
 
     text = "\n".join(text_parts).strip()
 
+    if "cannot determine" in text.lower() or "insufficient" in text.lower():
+        st.error("Claude indicates insufficient information to provide reliable guidance.")
+        st.stop()
+
+
     if "}" not in text:
         raise ValueError("Output looks truncated. Increase max_tokens or shorten constraints.")
 
@@ -176,6 +216,20 @@ if run_btn:
             else:
                 st.error("❗ Confidence: LOW (needs more info)")
 
+            missing = data.get("missing_information_needed", []) or []
+            if missing and confidence == "high":
+                st.warning("⚠️ Confidence adjusted: missing information detected")
+
+
+            severity = classify_severity(data)
+            if severity == "HIGH":
+                st.error("🚨 Severity: HIGH — financial risk likely")
+            elif severity == "MEDIUM":
+                st.warning("⚠️ Severity: MEDIUM — review recommended")
+            else:
+                st.success("✅ Severity: LOW")
+
+
             # Missing info panel
             missing = data.get("missing_information_needed", []) or []
             st.subheader("🧩 Missing Information Needed")
@@ -185,6 +239,20 @@ if run_btn:
                     st.write(f"- {m}")
             else:
                 st.success("No missing information flagged.")
+
+
+            st.subheader("📝 Appeal Letter Draft")
+
+            appeal_text = generate_appeal_text(data)
+
+            st.text_area("Editable draft:", value=appeal_text, height=220)
+
+            st.download_button(
+                label="📥 Download Appeal Letter",
+                data=appeal_text,
+                file_name="appeal_letter.txt"
+            )
+
 
             # Download + Copy
             st.download_button(
