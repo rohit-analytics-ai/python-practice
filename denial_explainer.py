@@ -118,6 +118,10 @@ def main():
         temperature=0.0,  #  deterministic outputs help evaluation later
     )
 
+    # Print run metadata for traceability
+    print(f"run_id: {data.get('_meta', {}).get('run_id')}")
+
+
     print(json.dumps(data, indent=2))
 
 

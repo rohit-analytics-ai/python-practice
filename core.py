@@ -12,6 +12,8 @@ import json
 import time
 import uuid
 from typing import Any, Dict, List, Tuple, Optional
+import logging
+from pathlib import Path
 
 # ===== Error taxonomy (clean UI + logs) =====
 # Standard error codes make debugging + eval reporting much easier.
@@ -21,6 +23,16 @@ ERR_MODEL_TRUNCATED = "MODEL_TRUNCATED"
 ERR_MODEL_NO_JSON = "MODEL_NO_JSON"
 ERR_MODEL_SCHEMA_INVALID = "MODEL_SCHEMA_INVALID"
 ERR_MODEL_JSON_PARSE = "MODEL_JSON_PARSE"
+
+
+# Basic file logging (avoid logging raw PHI; log only metadata)
+LOG_PATH = Path("denial_explainer.log")
+logging.basicConfig(
+    filename=str(LOG_PATH),
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+)
+logger = logging.getLogger("denial_explainer")
 
 
 # ===== Input validation =====
@@ -201,6 +213,10 @@ def run_denial_explainer(
     4) parse JSON
     5) validate schema
     """
+
+    logger.info("Starting run model=%s max_tokens=%s temperature=%s", model, max_tokens, temperature)
+
+
     raw_text, resp = call_claude_with_retry(
         client,
         model=model,
@@ -251,3 +267,14 @@ def run_denial_explainer(
 
 
     return data
+
+    meta = data.get("_meta", {})
+    logger.info(
+        "Completed run run_id=%s model=%s input_tokens=%s output_tokens=%s confidence=%s",
+        meta.get("run_id"),
+        meta.get("model"),
+        (meta.get("usage") or {}).get("input_tokens"),
+        (meta.get("usage") or {}).get("output_tokens"),
+        data.get("confidence"),
+    )
+
