@@ -5,6 +5,8 @@ import json          # lets us read/write JSON data
 import os            # lets us access environment variables (API key)
 from anthropic import Anthropic   # official Claude API client
 
+from core import validate_input, run_denial_explainer #let us access core.py
+
 
 # ===== SETTINGS / CONSTANTS =====
 # These are values we may want to change later.
@@ -58,31 +60,7 @@ Constraints:
 """
 
 
-# ===== EXTRACT JSON SAFELY =====
-# Claude sometimes adds extra text.
-# This function pulls only the JSON part.
 
-def extract_json(text: str) -> str:
-    if not text:
-        return ""
-
-    t = text.strip()
-
-    # Remove ``` code fences if Claude added them
-    if t.startswith("```"):
-        first_newline = t.find("\n")
-        if first_newline != -1:
-            t = t[first_newline + 1 :]
-        if t.endswith("```"):
-            t = t[:-3].strip()
-
-    # Extract text between first { and last }
-    start = t.find("{")
-    end = t.rfind("}")
-    if start == -1 or end == -1 or end <= start:
-        return ""
-
-    return t[start : end + 1]
 
 
 # ===== LOAD INPUT FILE =====
@@ -121,56 +99,31 @@ def main():
             "dates": {"service_date": "2026-02-01"},
         }
 
-    # Create Claude client
+    # Validate input before calling the API
+    errors = validate_input(denial_input)
+    if errors:
+        raise SystemExit(f"INPUT_INVALID: {errors}")
+
+
+        
     client = Anthropic(api_key=api_key)
 
-    # Send prompt to Claude
-    resp = client.messages.create(
+    #  Single reliable entry point (retry + parse + schema validation).
+    data = run_denial_explainer(
+        client,
         model=MODEL,
+        system_prompt=SYSTEM_PROMPT,
+        user_prompt=build_user_prompt(denial_input),
         max_tokens=900,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": build_user_prompt(denial_input)}],
+        temperature=0.0,  #  deterministic outputs help evaluation later
     )
 
-    # Robust extraction across SDK versions: take any block that has .text
-    # Extract text from Claude response blocks
-    text_parts = []
-    for block in resp.content:
-        txt = getattr(block, "text", None)
-        if isinstance(txt, str) and txt.strip():
-            text_parts.append(txt)
-
-    text = "\n".join(text_parts).strip()
-
-    # Fail fast if output is truncated
-    if "}" not in text:
-        raise SystemExit(
-            "Output appears truncated (missing closing brace). "
-            "Increase max_tokens or shorten constraints."
-        )
-
-    # Extract JSON portion
-    json_text = extract_json(text)
-    if not json_text:
-        print("\n--- RAW MODEL OUTPUT START ---\n")
-        print(repr(text))
-        print("\n--- RAW MODEL OUTPUT END ---\n")
-        raise SystemExit("Could not find a JSON object in model output.")
-
-    # Convert JSON string → Python dictionary
-    try:
-        data = json.loads(json_text)
-    except json.JSONDecodeError as e:
-        print("\n--- RAW MODEL OUTPUT START ---\n")
-        print(repr(text))
-        print("\n--- RAW MODEL OUTPUT END ---\n")
-        print("\n--- EXTRACTED JSON START ---\n")
-        print(repr(json_text))
-        print("\n--- EXTRACTED JSON END ---\n")
-        raise SystemExit(f"JSON parse error: {e}")
-
-    # Print clean formatted output
     print(json.dumps(data, indent=2))
 
+
+
+   
 if __name__ == "__main__":
     main()
+
+    
