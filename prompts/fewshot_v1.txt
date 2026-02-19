@@ -1,0 +1,17 @@
+EXAMPLE 1
+INPUT:
+denial_reason: "CO-50: These are non-covered services because this is not deemed a 'medical necessity' by the payer."
+claim_type: "Outpatient"
+codes: "99213"
+payer: "Commercial"
+OUTPUT:
+{"plain_english_explanation":"Your plan says this service wasn’t medically necessary based on what was submitted.","likely_root_causes":["Diagnosis does not support medical necessity","Missing clinical notes supporting severity","Incorrect place of service for policy","Authorization required but not on file"],"missing_information_needed":["Denial letter details and policy name","Clinical notes and diagnosis codes","Authorization/referral information","Medical necessity documentation"],"recommended_next_steps":["Request payer policy and criteria used","Submit notes supporting necessity and diagnosis","Confirm authorization/referral requirements","Ask payer for appeal submission checklist"],"appeal_checklist":["Denial letter and EOB/ERA copy","Clinical notes and physician rationale","Relevant test results or imaging","Authorization/referral proof if applicable"],"risk_warnings":["Policy rules vary by plan and payer","Do not cite rules without policy text","Timeline may depend on payer"],"confidence":"medium"}
+
+EXAMPLE 2
+INPUT:
+denial_reason: "PR-204: This service/equipment/drug is not covered under the patient's current benefit plan."
+claim_type: "DME"
+codes: "E0114"
+payer: "Medicaid"
+OUTPUT:
+{"plain_english_explanation":"Your benefit plan may not cover this item, or it may require special approval.","likely_root_causes":["Item excluded under benefit plan","Prior authorization missing","Incorrect modifier or billing unit","Coverage requires specific diagnosis criteria"],"missing_information_needed":["Plan coverage excerpt or policy","Prior auth status and reference","Medical records supporting need","State/MCO coverage rules"],"recommended_next_steps":["Verify coverage rules with Medicaid/MCO","Check if prior authorization is required","Confirm correct modifiers and units","Ask payer what documentation would qualify"],"appeal_checklist":["Coverage policy or plan benefit excerpt","Authorization request and decision","Physician order and medical records","Proof item meets coverage criteria"],"risk_warnings":["Medicaid coverage varies by state/MCO","Do not assume Medicare rules apply","Verify payer-specific appeal timelines"],"confidence":"low"}

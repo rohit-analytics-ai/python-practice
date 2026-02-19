@@ -6,6 +6,8 @@ import os            # lets us access environment variables (API key)
 from anthropic import Anthropic   # official Claude API client
 
 from core import validate_input, run_denial_explainer #let us access core.py
+from pathlib import Path
+
 
 
 # ===== SETTINGS / CONSTANTS =====
@@ -15,17 +17,25 @@ MODEL = "claude-sonnet-4-5"   # which Claude model to use
 PROMPT_VERSION = "system_v1"
 
 # System prompt = "boss instructions" for Claude
-# These rules guide how Claude behaves.
-SYSTEM_PROMPT = """You are a healthcare claims denial explainer for US health insurance.
-You must be accurate, conservative, and safe.
+# These rules guide how Claude behaves. Moving system prompt out of Python strings
+#PROMPT_VERSION = "system_v1"
 
-Rules:
-- If information is missing, say so explicitly and ask for the minimum extra fields needed.
-- Do NOT invent policy details or CPT/ICD rules.
-- You must output ONLY a JSON object. Do not wrap in ``` fences. Do not add any extra text.
-- The first character of your entire response must be { and the last character must be }.
-- Keep language plain and member-friendly.
-"""
+
+def load_system_prompt(prompt_version: str) -> str:
+    path = Path(__file__).parent / "prompts" / f"{prompt_version}.txt"
+    return path.read_text(encoding="utf-8")
+
+# Backward-compatible alias so older code can still import SYSTEM_PROMPT
+SYSTEM_PROMPT = load_system_prompt(PROMPT_VERSION)
+
+
+def load_fewshot() -> str:
+    path = Path(__file__).parent / "prompts" / "fewshot_v1.txt"
+    return path.read_text(encoding="utf-8")
+
+def load_system_prompt(prompt_version: str) -> str:
+    base = (Path(__file__).parent / "prompts" / f"{prompt_version}.txt").read_text(encoding="utf-8")
+    return base + "\n\n" + load_fewshot()
 
 
 # ===== BUILD THE USER PROMPT =====
@@ -62,7 +72,29 @@ Constraints:
 
 
 
+def build_user_prompt_loose(payload: dict) -> str:
+    """Same as build_user_prompt but without word/array constraints. For temperature experiments only."""
+    return f"""Explain this claim denial in plain language and suggest next steps.
 
+Input JSON:
+{json.dumps(payload, indent=2)}
+
+Return JSON with exactly this schema:
+{{
+  "plain_english_explanation": "string",
+  "likely_root_causes": ["string", "..."],
+  "missing_information_needed": ["string", "..."],
+  "recommended_next_steps": ["string", "..."],
+  "appeal_checklist": ["string", "..."],
+  "risk_warnings": ["string", "..."],
+  "confidence": "low|medium|high"
+}}
+
+Constraints:
+- Do NOT use words like "5th grade" or "8th grade" in output.
+- If you are unsure, set confidence=low and list missing_information_needed.
+- Do not mention internal model details.
+"""
 
 # ===== LOAD INPUT FILE =====
 # Reads JSON file and converts to Python dictionary.
@@ -113,12 +145,13 @@ def main():
     data = run_denial_explainer(
         client,
         model=MODEL,
-        system_prompt=SYSTEM_PROMPT,
+        system_prompt=load_system_prompt(PROMPT_VERSION),
         user_prompt=build_user_prompt(denial_input),
         max_tokens=900,
         temperature=0.0,
         prompt_version=PROMPT_VERSION,
     )
+
 
     # Print run metadata for traceability
     print(f"run_id: {data.get('_meta', {}).get('run_id')}")

@@ -13,7 +13,10 @@ import streamlit as st
 from anthropic import Anthropic
 
 from denial_explainer import build_user_prompt, SYSTEM_PROMPT, MODEL, PROMPT_VERSION
+#from denial_explainer import build_user_prompt, build_user_prompt_loose, SYSTEM_PROMPT, MODEL, PROMPT_VERSION
+
 from core import validate_input, run_denial_explainer
+from denial_explainer import build_user_prompt, SYSTEM_PROMPT, MODEL, PROMPT_VERSION
 
 
 def friendly_error_message(err: Exception) -> tuple[str, str | None]:
@@ -185,7 +188,8 @@ if "history" not in st.session_state:
 # Persist last output so the UI doesn't go blank on reruns (e.g., feedback clicks)
 if "last_result" not in st.session_state:
     st.session_state.last_result = None
-
+if "temp_results" not in st.session_state:
+    st.session_state.temp_results = None
 # ---------- API key ----------
 api_key = os.getenv("ANTHROPIC_API_KEY")
 if not api_key:
@@ -196,6 +200,14 @@ client = Anthropic(api_key=api_key)
 
 # ---------- Mode toggle ----------
 compare_mode = st.checkbox("Compare two denials side-by-side", value=False)
+
+#----------Temp-experiment only for Normal mode
+if compare_mode:
+    temp_experiment = False
+else:
+    temp_experiment = st.checkbox(
+        "Run temperature experiment (0.0, 0.3, 0.7)"
+    )
 
 # ---------- UI layout ----------
 col1, col2 = st.columns(2)
@@ -216,12 +228,18 @@ with col1:
         unsafe_allow_html=True,
     )
 
+    # Guidance for better accuracy & compliance
+    st.info(
+        "For best accuracy, include relevant denial letter language or payer policy text. "
+        "Do not include patient-identifying information."
+    )
+
     default_input_1 = {
         "payer": "Example Health Plan",
         "denial_code_or_reason": "Service not medically necessary",
         "member_context": "Outpatient imaging for back pain",
         "provider_context": "Ordering physician submitted clinical notes",
-        "dates": {"service_date": "2026-02-01"},
+        "dates": {"service_date": "2026-01-25"},
     }
 
     default_input_2 = {
@@ -231,6 +249,7 @@ with col1:
         "provider_context": "Radiology facility billed without auth on file",
         "dates": {"service_date": "2026-01-18"},
     }
+
 
     if compare_mode:
         st.markdown("**Denial A**")
@@ -337,6 +356,7 @@ if run_btn:
                     st.caption(f"run_id: {run_id}")
                 # Optional: show short debug detail without dumping everything
                 st.caption(f"details: {str(e)[:200]}")
+                st.stop()
 
             meta = data_a.get("_meta", {})
             usage = meta.get("usage") or {}
@@ -372,7 +392,9 @@ if run_btn:
             st.session_state.history = st.session_state.history[:5]
 
             # Force rerun so col2 picks up the new result
-            st.rerun()
+            # Skip rerun for temp experiment so the side-by-side comparison stays visible
+            if not temp_experiment:
+                st.rerun()
 
         else:
             errors = validate_input(denial_input)
@@ -381,15 +403,61 @@ if run_btn:
                 st.stop()
 
             try:
-                data = run_denial_explainer(
-                    client,
-                    model=MODEL,
-                    system_prompt=SYSTEM_PROMPT,
-                    user_prompt=build_user_prompt(denial_input),
-                    max_tokens=max_tokens,
-                    prompt_version=PROMPT_VERSION,
-                    temperature=0.0,
-                )
+                # 🔬 Temperature experiment mode
+                if temp_experiment:
+                    temps = [0.0, 0.3, 0.7]
+                    temp_results = []
+
+                    # Use higher max_tokens for temp experiment since higher temps = more verbose
+                    exp_max_tokens = min(max_tokens + 300, 1000)
+
+                    for t in temps:
+                        try:
+                            result = run_denial_explainer(
+                                client,
+                                model=MODEL,
+                                system_prompt=SYSTEM_PROMPT,
+                                user_prompt=build_user_prompt(denial_input),
+                                max_tokens=exp_max_tokens,
+                                prompt_version=PROMPT_VERSION,
+                                temperature=t,
+                            )
+                            temp_results.append({"temp": t, "data": result})
+                        except Exception as e:
+                            temp_results.append({
+                                "temp": t,
+                                "data": {"error": str(e)[:150], "confidence": "N/A"}
+                            })
+
+                    # Use the temp=0.0 result as the "main" result for session state
+                    # Use first successful result as the "main" data
+                    data = next(
+                        (tr["data"] for tr in temp_results if "error" not in tr["data"]),
+                        temp_results[0]["data"]
+                    )
+
+                    # Save temp experiment results so persistent section can render them
+                    st.session_state.temp_results = temp_results
+                    
+                  
+                    
+                else:
+                    st.session_state.temp_results = None    
+                    data = run_denial_explainer(
+                        client,
+                        model=MODEL,
+                        system_prompt=SYSTEM_PROMPT,
+                        user_prompt=build_user_prompt(denial_input),
+                        max_tokens=max_tokens,
+                        prompt_version=PROMPT_VERSION,
+                        temperature=0.0,
+                    )
+
+
+
+######################################################
+
+
             except Exception as e:
                 user_msg, run_id = friendly_error_message(e)
                 st.error(user_msg)
@@ -397,6 +465,7 @@ if run_btn:
                     st.caption(f"run_id: {run_id}")
                 # Optional: show short debug detail without dumping everything
                 st.caption(f"details: {str(e)[:200]}")
+                st.stop()
 
             meta = data.get("_meta", {})
             usage = meta.get("usage") or {}
@@ -425,7 +494,34 @@ if st.session_state.last_result:
     last = st.session_state.last_result
     st.divider()
 
-    if last["mode"] == "single":
+    # ---------- Details (shown below columns, reads from session_state) ----------
+if st.session_state.last_result:
+    last = st.session_state.last_result
+    st.divider()
+
+    # Temperature experiment display
+    if st.session_state.temp_results:
+        st.subheader("Temperature Experiment Results")
+        temp_res = st.session_state.temp_results
+        tcols = st.columns(len(temp_res))
+        for idx, tr in enumerate(temp_res):
+            with tcols[idx]:
+                st.markdown(f"**Temp = {tr['temp']}**")
+                if "error" in tr["data"]:
+                    st.error(f"Failed: {tr['data']['error'][:100]}")
+                else:
+                    st.write(f"**Confidence:** {tr['data'].get('confidence', 'N/A')}")
+                    st.write(f"**Explanation:** {tr['data'].get('plain_english_explanation', 'N/A')}")
+                    steps = tr["data"].get("recommended_next_steps") or []
+                    if steps:
+                        st.write("**Next steps:**")
+                        for s in steps:
+                            st.write(f"- {s}")
+                    with st.expander("Full JSON"):
+                        st.json(tr["data"])
+
+    elif last["mode"] == "single":
+
         estimated_cost = (last["in_tok"] + last["out_tok"]) / 1_000_000 * 10
         st.caption(f"Estimated cost: ~${estimated_cost:.4f} (rough estimate)")
 
