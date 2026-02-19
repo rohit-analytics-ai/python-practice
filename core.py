@@ -74,7 +74,6 @@ REQUIRED_OUTPUT_KEYS = {
 def validate_response(data: Any) -> List[str]:
     """
     Validate the model response schema to avoid trusting hallucinated / malformed outputs.
-
     Returns: list of error strings (empty list means valid)
     """
     errors: List[str] = []
@@ -91,23 +90,41 @@ def validate_response(data: Any) -> List[str]:
     if confidence not in ("low", "medium", "high"):
         errors.append(f"Invalid confidence: {confidence!r} (must be low|medium|high)")
 
-    # Lists expected
-    for key in [
-        "likely_root_causes",
-        "missing_information_needed",
-        "recommended_next_steps",
-        "appeal_checklist",
-        "risk_warnings",
-    ]:
+    # Lists expected + item caps from prompt
+    list_caps = {
+        "likely_root_causes": 4,
+        "missing_information_needed": 4,
+        "recommended_next_steps": 4,
+        "appeal_checklist": 4,
+        "risk_warnings": 3,
+    }
+
+    for key, cap in list_caps.items():
         val = data.get(key)
         if not isinstance(val, list):
             errors.append(f"{key} should be a list")
+            continue
+        if len(val) > cap:
+            errors.append(f"{key} has {len(val)} items (max {cap})")
 
-    # Plain-English explanation expected
-    if not isinstance(data.get("plain_english_explanation"), str):
+        # Each item <= 18 words
+        for i, item in enumerate(val):
+            if not isinstance(item, str):
+                errors.append(f"{key}[{i}] must be a string")
+                continue
+            if len(item.split()) > 18:
+                errors.append(f"{key}[{i}] exceeds 18 words")
+
+    # Plain-English explanation expected + <= 60 words
+    pe = data.get("plain_english_explanation")
+    if not isinstance(pe, str):
         errors.append("plain_english_explanation should be a string")
+    else:
+        if len(pe.split()) > 60:
+            errors.append("plain_english_explanation exceeds 60 words")
 
     return errors
+
 
 
 # ===== JSON extraction =====
@@ -136,6 +153,21 @@ def extract_json(text: str) -> str:
         return ""
 
     return t[start : end + 1]
+
+
+def extract_and_parse_json(text: str) -> Dict[str, Any]:
+    """
+    Extract JSON object from model text and parse it.
+    Raises RuntimeError with taxonomy codes for clean handling in UI/CLI.
+    """
+    json_text = extract_json(text)
+    if not json_text:
+        raise RuntimeError(f"{ERR_MODEL_NO_JSON}: could not find JSON object")
+
+    try:
+        return json.loads(json_text)
+    except json.JSONDecodeError as e:
+        raise RuntimeError(f"{ERR_MODEL_JSON_PARSE}: {e}")
 
 
 # ===== Claude call with retry =====
@@ -201,21 +233,22 @@ def run_denial_explainer(
     user_prompt: str,
     max_tokens: int,
     temperature: Optional[float] = None,
+    prompt_version: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
-    FUTURE REFERENCE:
-    This is the single entry point both UI + CLI will use.
+    Single entry point used by UI + CLI.
 
     Steps:
-    1) call Claude (retry)
-    2) check truncation
-    3) extract JSON
-    4) parse JSON
+    1) create run_id
+    2) call Claude (retry)
+    3) check truncation
+    4) extract + parse JSON
     5) validate schema
+    6) attach safe metadata + log completion
     """
-
-    logger.info("Starting run model=%s max_tokens=%s temperature=%s", model, max_tokens, temperature)
-
+    run_id = str(uuid.uuid4())
+    logger.info("Starting run run_id=%s model=%s max_tokens=%s temperature=%s prompt_version=%s",
+                run_id, model, max_tokens, temperature, prompt_version)
 
     raw_text, resp = call_claude_with_retry(
         client,
@@ -227,28 +260,15 @@ def run_denial_explainer(
     )
 
     if "}" not in raw_text:
-        raise RuntimeError(f"{ERR_MODEL_TRUNCATED}: missing closing brace")
+        raise RuntimeError(f"{ERR_MODEL_TRUNCATED}: run_id={run_id}: missing closing brace")
 
-    json_text = extract_json(raw_text)
-    if not json_text:
-        raise RuntimeError(f"{ERR_MODEL_NO_JSON}: could not find JSON object")
-
-    try:
-        data = json.loads(json_text)
-    except json.JSONDecodeError as e:
-        raise RuntimeError(f"{ERR_MODEL_JSON_PARSE}: {e}")
+    data = extract_and_parse_json(raw_text)
 
     errors = validate_response(data)
     if errors:
-        raise RuntimeError(f"{ERR_MODEL_SCHEMA_INVALID}: {errors}")
+        raise RuntimeError(f"{ERR_MODEL_SCHEMA_INVALID}: run_id={run_id}: {errors}")
 
-    # Attach metadata for observability/cost tracking (safe to show)
     usage_obj = getattr(resp, "usage", None)
-
-    # Convert SDK Usage object to a plain dict (safe for JSON)
-    # In production, dont store SDK objects directly inside JSON,  
-    # instead normalize them into plain primitives (str/int/bool/list/dict).
-
     usage = None
     if usage_obj is not None:
         usage = {
@@ -259,22 +279,36 @@ def run_denial_explainer(
         }
 
     data["_meta"] = {
-        "run_id": str(uuid.uuid4()),
+        "run_id": run_id,
         "model": model,
         "max_tokens": max_tokens,
+        "temperature": temperature,
+        "prompt_version": prompt_version,
         "usage": usage,
     }
 
+    logger.info(
+        "Completed run run_id=%s model=%s input_tokens=%s output_tokens=%s confidence=%s",
+        run_id,
+        model,
+        (usage or {}).get("input_tokens"),
+        (usage or {}).get("output_tokens"),
+        data.get("confidence"),
+    )
 
     return data
 
-    meta = data.get("_meta", {})
+
+    meta = data.get("_meta") or {}
+    usage = meta.get("usage") or {}
+
     logger.info(
         "Completed run run_id=%s model=%s input_tokens=%s output_tokens=%s confidence=%s",
-        meta.get("run_id"),
-        meta.get("model"),
-        (meta.get("usage") or {}).get("input_tokens"),
-        (meta.get("usage") or {}).get("output_tokens"),
+        meta.get("run_id", run_id),
+        meta.get("model", model),
+        usage.get("input_tokens"),
+        usage.get("output_tokens"),
         data.get("confidence"),
     )
+
 

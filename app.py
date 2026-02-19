@@ -12,8 +12,39 @@ from pathlib import Path
 import streamlit as st
 from anthropic import Anthropic
 
-from denial_explainer import build_user_prompt, SYSTEM_PROMPT, MODEL
+from denial_explainer import build_user_prompt, SYSTEM_PROMPT, MODEL, PROMPT_VERSION
 from core import validate_input, run_denial_explainer
+
+
+def friendly_error_message(err: Exception) -> tuple[str, str | None]:
+    """
+    Returns (user_message, run_id).
+    Keeps UI friendly but still shows run_id for debugging.
+    """
+    msg = str(err)
+    run_id = None
+
+    # Try to extract run_id from the error text (we include run_id=... in core.py errors)
+    if "run_id=" in msg:
+        run_id = msg.split("run_id=", 1)[1].split()[0].strip().strip(":,;")
+
+    # Taxonomy mapping (match the prefixes used in core.py)
+    if "ERR_INPUT_VALIDATION" in msg:
+        return ("Input looks incomplete/invalid. Please check required fields and try again.", run_id)
+    if "ERR_MODEL_TRUNCATED" in msg:
+        return ("Model response was cut off. Please try again (or lower output verbosity).", run_id)
+    if "ERR_MODEL_NO_JSON" in msg:
+        return ("Model did not return valid JSON. Please try again.", run_id)
+    if "ERR_MODEL_JSON_PARSE" in msg:
+        return ("Model returned malformed JSON. Please try again.", run_id)
+    if "ERR_MODEL_SCHEMA_INVALID" in msg:
+        return ("Model output didn’t match the expected schema. Please try again.", run_id)
+    if "ERR_API" in msg or "API" in msg:
+        return ("API call failed or timed out. Please try again.", run_id)
+
+    # Fallback
+    return ("Something went wrong generating the explanation. Please try again.", run_id)
+
 
 
 def classify_severity(data: dict) -> str:
@@ -84,6 +115,7 @@ def render_feedback(last_result: dict) -> None:
             "model": meta.get("model"),
             "input_tokens": in_tok,
             "output_tokens": out_tok,
+            "prompt_version": meta.get("prompt_version"),
         }
         with open(feedback_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(record) + "\n")
@@ -103,12 +135,12 @@ def render_feedback(last_result: dict) -> None:
     st.caption(f"Feedback for Run ID: {meta.get('run_id') or 'no_run_id'}")
 
     with col_fb1:
-        if st.button("Accurate", key=f"fb_up_{run_id}"):
+        if st.button("👍Accurate", key=f"fb_up_{run_id}"):
             write_feedback("up")
             st.success(f"Saved to {feedback_path}")
 
     with col_fb2:
-        if st.button("Not accurate", key=f"fb_down_{run_id}"):
+        if st.button("👎Not accurate", key=f"fb_down_{run_id}"):
             write_feedback("down")
             st.success(f"Saved to {feedback_path}")
 
@@ -286,6 +318,7 @@ if run_btn:
                     system_prompt=SYSTEM_PROMPT,
                     user_prompt=build_user_prompt(denial_a),
                     max_tokens=max_tokens,
+                    prompt_version=PROMPT_VERSION,
                     temperature=0.0,
                 )
                 data_b = run_denial_explainer(
@@ -294,11 +327,16 @@ if run_btn:
                     system_prompt=SYSTEM_PROMPT,
                     user_prompt=build_user_prompt(denial_b),
                     max_tokens=max_tokens,
+                    prompt_version=PROMPT_VERSION,
                     temperature=0.0,
                 )
             except Exception as e:
-                st.error(str(e))
-                st.stop()
+                user_msg, run_id = friendly_error_message(e)
+                st.error(user_msg)
+                if run_id:
+                    st.caption(f"run_id: {run_id}")
+                # Optional: show short debug detail without dumping everything
+                st.caption(f"details: {str(e)[:200]}")
 
             meta = data_a.get("_meta", {})
             usage = meta.get("usage") or {}
@@ -349,11 +387,16 @@ if run_btn:
                     system_prompt=SYSTEM_PROMPT,
                     user_prompt=build_user_prompt(denial_input),
                     max_tokens=max_tokens,
+                    prompt_version=PROMPT_VERSION,
                     temperature=0.0,
                 )
             except Exception as e:
-                st.error(str(e))
-                st.stop()
+                user_msg, run_id = friendly_error_message(e)
+                st.error(user_msg)
+                if run_id:
+                    st.caption(f"run_id: {run_id}")
+                # Optional: show short debug detail without dumping everything
+                st.caption(f"details: {str(e)[:200]}")
 
             meta = data.get("_meta", {})
             usage = meta.get("usage") or {}

@@ -12,6 +12,7 @@ from core import validate_input, run_denial_explainer #let us access core.py
 # These are values we may want to change later.
 
 MODEL = "claude-sonnet-4-5"   # which Claude model to use
+PROMPT_VERSION = "system_v1"
 
 # System prompt = "boss instructions" for Claude
 # These rules guide how Claude behaves.
@@ -115,7 +116,8 @@ def main():
         system_prompt=SYSTEM_PROMPT,
         user_prompt=build_user_prompt(denial_input),
         max_tokens=900,
-        temperature=0.0,  #  deterministic outputs help evaluation later
+        temperature=0.0,
+        prompt_version=PROMPT_VERSION,
     )
 
     # Print run metadata for traceability
