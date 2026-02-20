@@ -1,0 +1,82 @@
+{
+  "metadata": {
+    "source": "X12 / Washington Publishing Company (WPC) - RARC list",
+    "note": "Curated subset of common RARC codes seen in denial remittances. Full list at wpc-edi.com.",
+    "last_updated": "2026-02-19",
+    "version": "1.0"
+  },
+  "rarc_codes": {
+    "MA01": {
+      "description": "If you do not agree with what we approved for these services, you may appeal our decision.",
+      "category": "alert"
+    },
+    "MA04": {
+      "description": "Secondary payment cannot be considered without the identity of or payment information from the primary payer.",
+      "category": "information"
+    },
+    "MA07": {
+      "description": "The claim information has also been forwarded to Medicaid for review.",
+      "category": "information"
+    },
+    "MA13": {
+      "description": "You may be subject to penalties if you bill the patient for amounts not reported with the PR group code.",
+      "category": "alert"
+    },
+    "MA18": {
+      "description": "The claim information is also being forwarded to the patient's supplemental insurer.",
+      "category": "information"
+    },
+    "MA130": {
+      "description": "Your claim contains incomplete and/or invalid information, and no appeal rights are afforded because the claim is unprocessable.",
+      "category": "action_required"
+    },
+    "N30": {
+      "description": "Patient not eligible for this payer's coverage on the date of service.",
+      "category": "eligibility"
+    },
+    "N56": {
+      "description": "Procedure code billed is not correct/valid for the services billed or the date of service billed.",
+      "category": "coding"
+    },
+    "N95": {
+      "description": "This provider type/provider specialty may not bill this service.",
+      "category": "provider"
+    },
+    "N115": {
+      "description": "This decision was based on a Local Coverage Determination (LCD).",
+      "category": "medical_necessity"
+    },
+    "N386": {
+      "description": "This decision was based on a Local Coverage Determination (LCD). An Advance Beneficiary Notice (ABN) was not on file.",
+      "category": "medical_necessity"
+    },
+    "N579": {
+      "description": "The services are not covered because they are not considered medically reasonable and necessary under the payer's guidelines.",
+      "category": "medical_necessity"
+    },
+    "N657": {
+      "description": "This claim has been identified as a readmission.",
+      "category": "clinical"
+    },
+    "N362": {
+      "description": "The number of days or units of service exceeds our acceptable maximum.",
+      "category": "benefit_limit"
+    },
+    "N432": {
+      "description": "Alert: Adjustment based on the contractual agreement between payer and provider.",
+      "category": "contract"
+    },
+    "N519": {
+      "description": "Invalid or missing modifier(s).",
+      "category": "coding"
+    },
+    "N522": {
+      "description": "Duplicate of a claim processed, or to be processed, as a crossover claim.",
+      "category": "duplicate"
+    },
+    "N650": {
+      "description": "This is a payer-initiated adjustment to ensure correct payment.",
+      "category": "adjustment"
+    }
+  }
+}

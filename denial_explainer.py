@@ -4,7 +4,7 @@ import argparse      # lets us pass arguments from terminal (like --input file.j
 import json          # lets us read/write JSON data
 import os            # lets us access environment variables (API key)
 from anthropic import Anthropic   # official Claude API client
-
+from code_lookup import enrich_input, get_sources_used
 from core import validate_input, run_denial_explainer #let us access core.py
 from pathlib import Path
 
@@ -56,6 +56,7 @@ Return JSON with exactly this schema:
   "appeal_checklist": ["string", "..."],
   "risk_warnings": ["string", "..."],
   "confidence": "low|medium|high"
+  "sources_used": ["string", "..."]  
 }}
 
 Constraints:
@@ -70,6 +71,7 @@ Constraints:
 - risk_warnings must be 3 items max.
 - If carc_code or rarc_code is provided, incorporate the code meaning into your explanation.
 - If carc_code or rarc_code is missing, list it in missing_information_needed.
+- In sources_used, list any CARC/RARC codes, payer policies, or references you relied on. If only using general knowledge, say "General healthcare claims knowledge".
 """
 
 
@@ -90,6 +92,7 @@ Return JSON with exactly this schema:
   "appeal_checklist": ["string", "..."],
   "risk_warnings": ["string", "..."],
   "confidence": "low|medium|high"
+  "sources_used": ["string", "..."]
 }}
 
 Constraints:
@@ -98,7 +101,17 @@ Constraints:
 - Do not mention internal model details.
 - If carc_code or rarc_code is provided, incorporate the code meaning into your explanation.
 - If carc_code or rarc_code is missing, list it in missing_information_needed.
+- In sources_used, list any CARC/RARC codes, payer policies, or references you relied on. If only using general knowledge, say "General healthcare claims knowledge".
 """
+
+def build_enriched_prompt(payload: dict) -> tuple:
+    """
+    Enrich input with CARC/RARC lookups, then build the user prompt.
+    Returns (user_prompt_string, enriched_payload).
+    """
+    enriched = enrich_input(payload)
+    prompt = build_user_prompt(enriched)
+    return prompt, enriched
 
 # ===== LOAD INPUT FILE =====
 # Reads JSON file and converts to Python dictionary.

@@ -17,6 +17,7 @@ from denial_explainer import build_user_prompt, SYSTEM_PROMPT, MODEL, PROMPT_VER
 
 from core import validate_input, run_denial_explainer
 from denial_explainer import build_user_prompt, SYSTEM_PROMPT, MODEL, PROMPT_VERSION
+from code_lookup import enrich_input, get_sources_used, lookup_carc, lookup_rarc
 
 
 def friendly_error_message(err: Exception) -> tuple[str, str | None]:
@@ -343,11 +344,13 @@ if run_btn:
                 st.stop()
 
             try:
+                enriched_a = enrich_input(denial_a)
+                enriched_b = enrich_input(denial_b)
                 data_a = run_denial_explainer(
                     client,
                     model=MODEL,
                     system_prompt=SYSTEM_PROMPT,
-                    user_prompt=build_user_prompt(denial_a),
+                    user_prompt=build_user_prompt(enriched_a),
                     max_tokens=max_tokens,
                     prompt_version=PROMPT_VERSION,
                     temperature=0.0,
@@ -356,7 +359,7 @@ if run_btn:
                     client,
                     model=MODEL,
                     system_prompt=SYSTEM_PROMPT,
-                    user_prompt=build_user_prompt(denial_b),
+                    user_prompt=build_user_prompt(enriched_b),
                     max_tokens=max_tokens,
                     prompt_version=PROMPT_VERSION,
                     temperature=0.0,
@@ -379,6 +382,7 @@ if run_btn:
             st.session_state.last_result = {
                 "mode": "compare",
                 "input": {"A": denial_a, "B": denial_b},
+                "enriched_input": {"A": enriched_a, "B": enriched_b},
                 "data": {"A": data_a, "B": data_b},
                 "meta": meta,
                 "in_tok": in_tok,
@@ -419,7 +423,7 @@ if run_btn:
                 if temp_experiment:
                     temps = [0.0, 0.3, 0.7]
                     temp_results = []
-
+                    enriched_input = enrich_input(denial_input)
                     # Use higher max_tokens for temp experiment since higher temps = more verbose
                     exp_max_tokens = min(max_tokens + 300, 1000)
 
@@ -429,7 +433,8 @@ if run_btn:
                                 client,
                                 model=MODEL,
                                 system_prompt=SYSTEM_PROMPT,
-                                user_prompt=build_user_prompt(denial_input),
+                                #user_prompt=build_user_prompt(denial_input),
+                                user_prompt=build_user_prompt(enriched_input),
                                 max_tokens=exp_max_tokens,
                                 prompt_version=PROMPT_VERSION,
                                 temperature=t,
@@ -454,12 +459,14 @@ if run_btn:
                   
                     
                 else:
-                    st.session_state.temp_results = None    
+                    st.session_state.temp_results = None 
+                    enriched_input = enrich_input(denial_input)
                     data = run_denial_explainer(
                         client,
                         model=MODEL,
                         system_prompt=SYSTEM_PROMPT,
-                        user_prompt=build_user_prompt(denial_input),
+                        #user_prompt=build_user_prompt(denial_input),
+                        user_prompt=build_user_prompt(enriched_input),
                         max_tokens=max_tokens,
                         prompt_version=PROMPT_VERSION,
                         temperature=0.0,
@@ -488,6 +495,7 @@ if run_btn:
             st.session_state.last_result = {
                 "mode": "single",
                 "input": denial_input,
+                "enriched_input": enriched_input,
                 "data": data,
                 "meta": meta,
                 "in_tok": in_tok,
@@ -558,6 +566,29 @@ if st.session_state.last_result:
         else:
             st.success("Severity: LOW")
 
+        enrichment = last.get("enriched_input", {}).get("_code_enrichment", {})
+        if enrichment:
+            st.subheader("Code Lookup (Grounding Sources)")
+            carc = enrichment.get("carc_lookup", {})
+            if carc.get("found"):
+                st.write(f"**CARC {carc['number']}:** {carc['description']}")
+                st.write(f"**Category:** {carc['category']}")
+                st.write(f"**Appeal guidance:** {carc['appeal_guidance']}")
+            else:
+                st.warning(f"CARC code not found in lookup table: {carc.get('raw_input', 'N/A')}")
+            rarc = enrichment.get("rarc_lookup", {})
+            if rarc.get("found"):
+                st.write(f"**RARC {rarc['code']}:** {rarc['description']}")
+            elif rarc.get("raw_input"):
+                st.warning(f"RARC code not found in lookup table: {rarc.get('raw_input', 'N/A')}")
+
+        sources = last.get("data", {}).get("sources_used", [])
+        if sources:
+            st.subheader("Sources Used by Claude")
+            for s in sources:
+                st.write(f"- {s}")
+
+                
         st.subheader("Missing Information Needed")
         if missing:
             st.warning("More info is needed to increase confidence:")
@@ -591,6 +622,33 @@ if st.session_state.last_result:
             "vs",
             len(last["data"]["B"].get("missing_information_needed") or []),
         )
+
+        enriched_compare = last.get("enriched_input", {})
+        if enriched_compare:
+            st.subheader("Code Lookup (Grounding Sources)")
+            comp_a, comp_b = st.columns(2)
+            with comp_a:
+                st.markdown("**Denial A**")
+                enr_a = enriched_compare.get("A", {}).get("_code_enrichment", {})
+                if enr_a:
+                    carc = enr_a.get("carc_lookup", {})
+                    if carc.get("found"):
+                        st.write(f"**CARC {carc['number']}:** {carc['description']}")
+                        st.write(f"**Appeal guidance:** {carc['appeal_guidance']}")
+                    rarc = enr_a.get("rarc_lookup", {})
+                    if rarc.get("found"):
+                        st.write(f"**RARC {rarc['code']}:** {rarc['description']}")
+            with comp_b:
+                st.markdown("**Denial B**")
+                enr_b = enriched_compare.get("B", {}).get("_code_enrichment", {})
+                if enr_b:
+                    carc = enr_b.get("carc_lookup", {})
+                    if carc.get("found"):
+                        st.write(f"**CARC {carc['number']}:** {carc['description']}")
+                        st.write(f"**Appeal guidance:** {carc['appeal_guidance']}")
+                    rarc = enr_b.get("rarc_lookup", {})
+                    if rarc.get("found"):
+                        st.write(f"**RARC {rarc['code']}:** {rarc['description']}")
 
     # Feedback -- single place, always rendered from session_state
     render_feedback(last)

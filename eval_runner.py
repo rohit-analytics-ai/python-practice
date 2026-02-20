@@ -25,7 +25,7 @@ from pathlib import Path
 from anthropic import Anthropic
 from denial_explainer import build_user_prompt, SYSTEM_PROMPT, MODEL, PROMPT_VERSION
 from core import validate_input, run_denial_explainer
-
+from code_lookup import enrich_input
 
 # ---------------------------------------------------------------------------
 # Config
@@ -104,6 +104,7 @@ REQUIRED_RESPONSE_KEYS = {
     "appeal_checklist",
     "risk_warnings",
     "confidence",
+    "sources_used",
 }
 
 
@@ -112,8 +113,8 @@ def check_schema_valid(data):
     if not isinstance(data, dict):
         return False, "response is not a dict"
 
-    missing = REQUIRED_RESPONSE_KEYS - set(data.keys())
-    # Ignore _meta key
+    data_keys = {k for k in data.keys() if k != "_meta"}
+    missing = REQUIRED_RESPONSE_KEYS - data_keys
     if missing:
         return False, f"missing keys: {missing}"
 
@@ -121,7 +122,7 @@ def check_schema_valid(data):
         return False, f"invalid confidence: {data.get('confidence')}"
 
     for key in ["likely_root_causes", "recommended_next_steps",
-                "appeal_checklist", "risk_warnings", "missing_information_needed"]:
+                "appeal_checklist", "risk_warnings", "missing_information_needed","sources_used"]:
         if not isinstance(data.get(key, []), list):
             return False, f"{key} is not a list"
 
@@ -344,11 +345,12 @@ def run_single_case(client, case, num_runs=3):
         }
 
         try:
+            enriched = enrich_input(denial_input)
             data = run_denial_explainer(
                 client,
                 model=MODEL,
                 system_prompt=SYSTEM_PROMPT,
-                user_prompt=build_user_prompt(denial_input),
+                user_prompt=build_user_prompt(enriched),
                 max_tokens=MAX_TOKENS,
                 prompt_version=PROMPT_VERSION,
                 temperature=TEMPERATURE,

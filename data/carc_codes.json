@@ -1,0 +1,191 @@
+{
+  "metadata": {
+    "source": "X12 / Washington Publishing Company (WPC) - CARC list",
+    "note": "Curated subset of most common denial-related CARC codes. Full list at wpc-edi.com.",
+    "last_updated": "2026-02-19",
+    "version": "1.0"
+  },
+  "group_codes": {
+    "CO": "Contractual Obligation — Adjustment based on contract terms. Provider cannot bill the patient for this amount.",
+    "PR": "Patient Responsibility — Amount the patient owes (deductible, coinsurance, copay, non-covered).",
+    "OA": "Other Adjustment — Adjustment not attributable to contract or patient (e.g., COB, prior payer payment).",
+    "PI": "Payer Initiated — Payer-initiated reduction not based on contract. Provider may appeal or bill the patient.",
+    "CR": "Correction/Reversal — Adjustment from a previous claim correction."
+  },
+  "carc_codes": {
+    "1": {
+      "description": "Deductible amount",
+      "common_group": "PR",
+      "category": "patient_responsibility",
+      "appeal_guidance": "Generally not appealable. Verify deductible status with payer. Member may request EOB review if deductible was already met."
+    },
+    "2": {
+      "description": "Coinsurance amount",
+      "common_group": "PR",
+      "category": "patient_responsibility",
+      "appeal_guidance": "Generally not appealable. Verify plan benefit details and coinsurance percentage."
+    },
+    "3": {
+      "description": "Co-payment amount",
+      "common_group": "PR",
+      "category": "patient_responsibility",
+      "appeal_guidance": "Generally not appealable. Verify copay schedule matches plan."
+    },
+    "4": {
+      "description": "The procedure code is inconsistent with the modifier used or a required modifier is missing.",
+      "common_group": "CO",
+      "category": "coding",
+      "appeal_guidance": "Review modifier requirements. Correct and resubmit with appropriate modifier. Check LCD/NCD for modifier rules if Medicare."
+    },
+    "5": {
+      "description": "The procedure code/bill type is inconsistent with the place of service.",
+      "common_group": "CO",
+      "category": "coding",
+      "appeal_guidance": "Verify place of service matches procedure. Correct and resubmit if billing error."
+    },
+    "6": {
+      "description": "The procedure/revenue code is inconsistent with the patient's age.",
+      "common_group": "CO",
+      "category": "coding",
+      "appeal_guidance": "Verify patient age and procedure code age restrictions. If correct, appeal with clinical documentation."
+    },
+    "9": {
+      "description": "The diagnosis is inconsistent with the patient's age.",
+      "common_group": "CO",
+      "category": "coding",
+      "appeal_guidance": "Verify diagnosis code. If clinically appropriate, appeal with supporting documentation."
+    },
+    "11": {
+      "description": "The diagnosis is inconsistent with the procedure.",
+      "common_group": "CO",
+      "category": "coding",
+      "appeal_guidance": "Review diagnosis-procedure pairing. May need to add or change diagnosis code to support medical necessity."
+    },
+    "15": {
+      "description": "The authorization number is missing, invalid, or does not apply to the billed services or provider.",
+      "common_group": "CO",
+      "category": "prior_authorization",
+      "appeal_guidance": "Obtain or verify auth number. If auth was obtained, resubmit with correct auth number. If not obtained, check if retroactive auth is available."
+    },
+    "16": {
+      "description": "Claim/service lacks information or has submission/billing error(s).",
+      "common_group": "CO",
+      "category": "incomplete_claim",
+      "appeal_guidance": "Review RARC code for specific missing information. Correct and resubmit. Check for missing fields on CMS-1500 or UB-04."
+    },
+    "18": {
+      "description": "Exact duplicate claim/service.",
+      "common_group": "CO",
+      "category": "duplicate",
+      "appeal_guidance": "Verify claim was not previously submitted and paid. If not a duplicate, appeal with documentation showing distinct services."
+    },
+    "22": {
+      "description": "This care may be covered by another payer per coordination of benefits.",
+      "common_group": "OA",
+      "category": "coordination_of_benefits",
+      "appeal_guidance": "Determine primary payer. Submit to primary first, then submit to secondary with primary EOB attached."
+    },
+    "23": {
+      "description": "The impact of prior payer(s) adjudication including payments and/or adjustments.",
+      "common_group": "OA",
+      "category": "coordination_of_benefits",
+      "appeal_guidance": "This reflects COB adjustment. Verify primary payer payment was applied correctly. Submit primary EOB if not already on file."
+    },
+    "26": {
+      "description": "Expenses incurred prior to coverage.",
+      "common_group": "CO",
+      "category": "eligibility",
+      "appeal_guidance": "Verify member effective date. If member was eligible, appeal with enrollment documentation."
+    },
+    "27": {
+      "description": "Expenses incurred after coverage terminated.",
+      "common_group": "CO",
+      "category": "eligibility",
+      "appeal_guidance": "Verify member termination date. If member was still eligible, appeal with enrollment documentation or COBRA proof."
+    },
+    "29": {
+      "description": "The time limit for filing has expired.",
+      "common_group": "CO",
+      "category": "timely_filing",
+      "appeal_guidance": "Check payer-specific timely filing limit. If filed timely, appeal with proof of timely submission (electronic confirmation, certified mail receipt). Medicare allows 1 year from DOS."
+    },
+    "31": {
+      "description": "Patient cannot be identified as our insured.",
+      "common_group": "CO",
+      "category": "eligibility",
+      "appeal_guidance": "Verify member ID, name, and DOB. Resubmit with corrected member information."
+    },
+    "45": {
+      "description": "Charge exceeds fee schedule/maximum allowable or contracted/legislated fee arrangement.",
+      "common_group": "CO",
+      "category": "fee_schedule",
+      "appeal_guidance": "Generally not appealable for in-network. For out-of-network, verify allowed amount calculation. Member may owe balance for OON services depending on state law."
+    },
+    "50": {
+      "description": "These are non-covered services because this is not deemed a 'medical necessity' by the payer.",
+      "common_group": "CO",
+      "category": "medical_necessity",
+      "appeal_guidance": "Strongest appeal path. Gather clinical documentation supporting necessity. Include physician letter of medical necessity, clinical notes, prior treatment history. Check payer medical policy for specific criteria."
+    },
+    "96": {
+      "description": "Non-covered charge(s). At least one Remark Code must be provided.",
+      "common_group": "CO",
+      "category": "non_covered",
+      "appeal_guidance": "Check RARC code for specific reason. May be plan exclusion, experimental service, or benefit limit reached. Review plan document for coverage terms."
+    },
+    "97": {
+      "description": "The benefit for this service is included in the payment/allowance for another service/procedure that has already been adjudicated.",
+      "common_group": "CO",
+      "category": "bundling",
+      "appeal_guidance": "Review bundling rules (CCI edits for Medicare). If services are truly separate, appeal with modifier 59 or XE/XS/XP/XU modifiers and documentation of distinct service."
+    },
+    "109": {
+      "description": "Claim/service not covered by this payer/contractor. You must send the claim/service to the correct payer/contractor.",
+      "common_group": "OA",
+      "category": "wrong_payer",
+      "appeal_guidance": "Identify correct payer. Resubmit to appropriate plan. Common with Medicare Advantage vs Original Medicare routing."
+    },
+    "119": {
+      "description": "Benefit maximum for this time period or occurrence has been reached.",
+      "common_group": "CO",
+      "category": "benefit_limit",
+      "appeal_guidance": "Verify benefit limits in plan document. If medically necessary beyond limit, request exception or peer-to-peer review."
+    },
+    "167": {
+      "description": "This (these) diagnosis(es) is (are) not covered.",
+      "common_group": "CO",
+      "category": "non_covered",
+      "appeal_guidance": "Review plan exclusions. Consider if alternative diagnosis code is clinically appropriate. If diagnosis is correct, appeal with clinical justification."
+    },
+    "197": {
+      "description": "Precertification/authorization/notification absent.",
+      "common_group": "CO",
+      "category": "prior_authorization",
+      "appeal_guidance": "Similar to CARC 15. Obtain retroactive auth if payer allows. Document medical necessity and urgency if emergent. Check if service type truly requires auth per payer policy."
+    },
+    "204": {
+      "description": "This service/equipment/drug is not covered under the patient's current benefit plan.",
+      "common_group": "CO",
+      "category": "non_covered",
+      "appeal_guidance": "Review plan benefit document. Verify correct plan is on file. If covered, appeal with plan documentation. If not covered, explore alternative coverage or patient assistance programs."
+    },
+    "242": {
+      "description": "Services not provided by network/primary care providers.",
+      "common_group": "CO",
+      "category": "network",
+      "appeal_guidance": "Verify provider network status. If OON, check if network exception applies (no in-network provider available). Check state surprise billing protections."
+    },
+    "252": {
+      "description": "An attachment/other documentation is required to adjudicate this claim/service.",
+      "common_group": "CO",
+      "category": "incomplete_claim",
+      "appeal_guidance": "Submit requested documentation. Check RARC for specific attachment needed. Resubmit with all required supporting documents."
+    },
+    "256": {
+      "description": "Service not payable per managed care contract.",
+      "common_group": "CO",
+      "category": "contract",
+      "appeal_guidance": "Review managed care contract terms. If service should be covered, escalate through provider relations or file formal dispute."
+    }
+  }
+}

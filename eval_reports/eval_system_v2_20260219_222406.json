@@ -1,0 +1,1566 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-20T03:24:06.913848+00:00",
+    "prompt_version": "system_v2",
+    "model": "claude-sonnet-4-5",
+    "max_tokens": 900,
+    "temperature": 0.0,
+    "runs_per_case": 1,
+    "total_cases": 12
+  },
+  "results": [
+    {
+      "test_id": "001",
+      "category": "medical_necessity",
+      "description": "Standard medical necessity denial with full clinical context",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "Anthem denied the lumbar spine MRI because they determined it wasn't medically necessary under their coverage guidelines. Even though your doctor documented 8 weeks of conservative treatment for chronic low back pain, the insurer's criteria for approving this imaging study were not met.",
+            "likely_root_causes": [
+              "Anthem's medical policy may require longer conservative treatment before authorizing MRI imaging.",
+              "Clinical documentation may not have demonstrated specific red flag symptoms justifying advanced imaging.",
+              "Prior authorization was not obtained before the MRI was performed.",
+              "Documentation may not show failed conservative therapies like physical therapy or medication trials."
+            ],
+            "missing_information_needed": [
+              "Anthem's specific medical necessity policy for lumbar MRI and required conservative treatment duration.",
+              "Whether prior authorization was required and if it was requested before service.",
+              "Complete clinical notes showing symptom severity, neurological findings, and treatment response.",
+              "Anthem's criteria for red flag symptoms that would justify earlier imaging."
+            ],
+            "recommended_next_steps": [
+              "Request Anthem's medical policy for lumbar spine MRI to identify specific coverage criteria.",
+              "Obtain detailed letter from ordering physician explaining why MRI was medically necessary now.",
+              "Gather all documentation of conservative treatments, medications, and patient's lack of improvement.",
+              "File a formal appeal within Anthem's deadline, including all clinical records and policy justification."
+            ],
+            "appeal_checklist": [
+              "Physician letter of medical necessity specifically addressing Anthem's policy criteria for lumbar MRI.",
+              "Complete treatment timeline showing 8+ weeks conservative care and clinical response documentation.",
+              "Clinical notes documenting pain severity, functional limitations, and any neurological symptoms present.",
+              "Copy of Anthem's medical policy with highlighted sections showing how case meets criteria."
+            ],
+            "risk_warnings": [
+              "CO group code means provider cannot bill patient; appeal is required to recover payment.",
+              "Appeal deadlines are typically 180 days but verify Anthem's specific timeframe immediately.",
+              "If appeal fails, patient is not responsible for payment under contractual obligation rules."
+            ],
+            "confidence": "high"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "high in ['medium', 'high']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "next steps count: 4"
+            ],
+            "root_causes_count": [
+              true,
+              "root causes count: 4"
+            ]
+          },
+          "tokens": {
+            "input": 1683,
+            "output": 513
+          },
+          "cost_estimate": 0.012744,
+          "actual_output": {
+            "confidence": "high",
+            "plain_english_explanation": "Anthem denied the lumbar spine MRI because they determined it wasn't medically necessary under their coverage guidelines. Even though your doctor documented 8 weeks of conservative treatment for chronic low back pain, the insurer's criteria for approving this imaging study were not met.",
+            "likely_root_causes": [
+              "Anthem's medical policy may require longer conservative treatment before authorizing MRI imaging.",
+              "Clinical documentation may not have demonstrated specific red flag symptoms justifying advanced imaging.",
+              "Prior authorization was not obtained before the MRI was performed.",
+              "Documentation may not show failed conservative therapies like physical therapy or medication trials."
+            ],
+            "missing_information_needed": [
+              "Anthem's specific medical necessity policy for lumbar MRI and required conservative treatment duration.",
+              "Whether prior authorization was required and if it was requested before service.",
+              "Complete clinical notes showing symptom severity, neurological findings, and treatment response.",
+              "Anthem's criteria for red flag symptoms that would justify earlier imaging."
+            ],
+            "recommended_next_steps": [
+              "Request Anthem's medical policy for lumbar spine MRI to identify specific coverage criteria.",
+              "Obtain detailed letter from ordering physician explaining why MRI was medically necessary now.",
+              "Gather all documentation of conservative treatments, medications, and patient's lack of improvement.",
+              "File a formal appeal within Anthem's deadline, including all clinical records and policy justification."
+            ],
+            "risk_warnings": [
+              "CO group code means provider cannot bill patient; appeal is required to recover payment.",
+              "Appeal deadlines are typically 180 days but verify Anthem's specific timeframe immediately.",
+              "If appeal fails, patient is not responsible for payment under contractual obligation rules."
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1683,
+        "total_output_tokens": 513,
+        "total_cost_estimate": 0.012744
+      }
+    },
+    {
+      "test_id": "002",
+      "category": "prior_authorization",
+      "description": "Prior auth not obtained before outpatient MRI",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "UnitedHealthcare denied this MRI claim because the radiology center did not get approval before performing the scan. The insurance requires prior authorization for outpatient MRIs. Since this is a contractual requirement, the provider cannot bill you for the denied amount.",
+            "likely_root_causes": [
+              "Radiology center failed to obtain prior authorization before the MRI scan",
+              "Authorization request may have been submitted but not approved in time",
+              "Provider may have incorrect or missing authorization number on file",
+              "Service may require specific authorization type that was not obtained"
+            ],
+            "missing_information_needed": [
+              "Was any authorization request submitted to UnitedHealthcare before the service date",
+              "Does the provider have an authorization number that was not included on claim",
+              "What is UnitedHealthcare's specific prior authorization policy for CPT 73721 MRIs",
+              "Is retroactive authorization available for this service and diagnosis"
+            ],
+            "recommended_next_steps": [
+              "Contact radiology center to confirm whether authorization was requested before January 20, 2026",
+              "Ask provider to check if retroactive authorization can be requested from UnitedHealthcare",
+              "Request provider resubmit claim with correct authorization number if one exists",
+              "Verify with UnitedHealthcare policy whether knee MRI for meniscus tear requires prior auth"
+            ],
+            "appeal_checklist": [
+              "Obtain documentation showing authorization was requested or approved before service date",
+              "Gather clinical notes showing medical necessity for MRI of suspected meniscus tear",
+              "Collect UnitedHealthcare contract terms regarding prior authorization requirements for outpatient imaging",
+              "Include any correspondence between provider and UnitedHealthcare about authorization status"
+            ],
+            "risk_warnings": [
+              "Provider cannot bill you for this denied amount due to contractual obligation",
+              "Retroactive authorization may not be available depending on UnitedHealthcare policy and timing",
+              "Appeal must be filed within UnitedHealthcare's deadline, verify timeframe immediately"
+            ],
+            "confidence": "high"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "high in ['medium', 'high']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "next steps count: 4"
+            ],
+            "root_causes_count": [
+              true,
+              "root causes count: 4"
+            ]
+          },
+          "tokens": {
+            "input": 1654,
+            "output": 505
+          },
+          "cost_estimate": 0.012537,
+          "actual_output": {
+            "confidence": "high",
+            "plain_english_explanation": "UnitedHealthcare denied this MRI claim because the radiology center did not get approval before performing the scan. The insurance requires prior authorization for outpatient MRIs. Since this is a contractual requirement, the provider cannot bill you for the denied amount.",
+            "likely_root_causes": [
+              "Radiology center failed to obtain prior authorization before the MRI scan",
+              "Authorization request may have been submitted but not approved in time",
+              "Provider may have incorrect or missing authorization number on file",
+              "Service may require specific authorization type that was not obtained"
+            ],
+            "missing_information_needed": [
+              "Was any authorization request submitted to UnitedHealthcare before the service date",
+              "Does the provider have an authorization number that was not included on claim",
+              "What is UnitedHealthcare's specific prior authorization policy for CPT 73721 MRIs",
+              "Is retroactive authorization available for this service and diagnosis"
+            ],
+            "recommended_next_steps": [
+              "Contact radiology center to confirm whether authorization was requested before January 20, 2026",
+              "Ask provider to check if retroactive authorization can be requested from UnitedHealthcare",
+              "Request provider resubmit claim with correct authorization number if one exists",
+              "Verify with UnitedHealthcare policy whether knee MRI for meniscus tear requires prior auth"
+            ],
+            "risk_warnings": [
+              "Provider cannot bill you for this denied amount due to contractual obligation",
+              "Retroactive authorization may not be available depending on UnitedHealthcare policy and timing",
+              "Appeal must be filed within UnitedHealthcare's deadline, verify timeframe immediately"
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1654,
+        "total_output_tokens": 505,
+        "total_cost_estimate": 0.012537
+      }
+    },
+    {
+      "test_id": "003",
+      "category": "eligibility",
+      "description": "Member not eligible on date of service - coverage gap",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "Cigna denied this annual wellness exam claim because their records show your coverage ended before the February 3, 2026 visit. The provider cannot bill you for this under contract rules. This is likely an eligibility verification error, not a medical necessity issue.",
+            "likely_root_causes": [
+              "Coverage termination date in Cigna's system predates the service date",
+              "Eligibility verification at check-in used outdated or incorrect insurance information",
+              "COBRA continuation or reinstatement not reflected in payer's real-time eligibility system",
+              "Administrative lag between premium payment and system update of active coverage status"
+            ],
+            "missing_information_needed": [
+              "Exact coverage termination date from Cigna's eligibility response or member portal",
+              "Proof of active coverage on February 3, 2026 (ID card, premium receipts, HR letter)",
+              "COBRA election notice or reinstatement confirmation if applicable",
+              "Real-time eligibility check result from date of service showing active or terminated status"
+            ],
+            "recommended_next_steps": [
+              "Contact Cigna member services immediately to confirm coverage status on February 3, 2026",
+              "Request corrected eligibility dates if coverage was active; obtain written confirmation from Cigna",
+              "If COBRA or reinstatement applies, submit election forms and payment proof with appeal",
+              "Provider should resubmit claim with corrected eligibility documentation once Cigna confirms active coverage"
+            ],
+            "appeal_checklist": [
+              "Copy of insurance card showing coverage effective date and member ID number",
+              "Premium payment receipts or payroll deduction records covering the service date period",
+              "HR letter or COBRA election notice confirming active coverage on February 3, 2026",
+              "Cigna's corrected eligibility confirmation letter or portal screenshot showing active status"
+            ],
+            "risk_warnings": [
+              "If coverage truly terminated before service, you may owe full charges for the visit",
+              "Appeal deadlines vary; verify Cigna's timeframe to avoid forfeiting your right to dispute",
+              "Provider may send bill to collections if eligibility issue remains unresolved beyond billing cycle"
+            ],
+            "confidence": "high"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "high in ['medium', 'high']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "next steps count: 4"
+            ],
+            "root_causes_count": [
+              true,
+              "root causes count: 4"
+            ]
+          },
+          "tokens": {
+            "input": 1586,
+            "output": 540
+          },
+          "cost_estimate": 0.012858,
+          "actual_output": {
+            "confidence": "high",
+            "plain_english_explanation": "Cigna denied this annual wellness exam claim because their records show your coverage ended before the February 3, 2026 visit. The provider cannot bill you for this under contract rules. This is likely an eligibility verification error, not a medical necessity issue.",
+            "likely_root_causes": [
+              "Coverage termination date in Cigna's system predates the service date",
+              "Eligibility verification at check-in used outdated or incorrect insurance information",
+              "COBRA continuation or reinstatement not reflected in payer's real-time eligibility system",
+              "Administrative lag between premium payment and system update of active coverage status"
+            ],
+            "missing_information_needed": [
+              "Exact coverage termination date from Cigna's eligibility response or member portal",
+              "Proof of active coverage on February 3, 2026 (ID card, premium receipts, HR letter)",
+              "COBRA election notice or reinstatement confirmation if applicable",
+              "Real-time eligibility check result from date of service showing active or terminated status"
+            ],
+            "recommended_next_steps": [
+              "Contact Cigna member services immediately to confirm coverage status on February 3, 2026",
+              "Request corrected eligibility dates if coverage was active; obtain written confirmation from Cigna",
+              "If COBRA or reinstatement applies, submit election forms and payment proof with appeal",
+              "Provider should resubmit claim with corrected eligibility documentation once Cigna confirms active coverage"
+            ],
+            "risk_warnings": [
+              "If coverage truly terminated before service, you may owe full charges for the visit",
+              "Appeal deadlines vary; verify Cigna's timeframe to avoid forfeiting your right to dispute",
+              "Provider may send bill to collections if eligibility issue remains unresolved beyond billing cycle"
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1586,
+        "total_output_tokens": 540,
+        "total_cost_estimate": 0.012858
+      }
+    },
+    {
+      "test_id": "004",
+      "category": "timely_filing",
+      "description": "Claim filed past payer timely filing deadline",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "Aetna denied this routine blood panel claim because the lab submitted it 14 months after the service date, exceeding the filing deadline. CO-29 means this is a contract rule, so the provider cannot bill you. The lab missed the deadline to submit the claim on time.",
+            "likely_root_causes": [
+              "Lab delayed claim submission by over a year after the blood draw.",
+              "Lab may have had billing system issues or administrative backlog.",
+              "Provider did not track timely filing deadlines for this payer."
+            ],
+            "missing_information_needed": [
+              "Aetna's specific timely filing limit in the provider contract.",
+              "Whether any prior claim submission attempts were made and rejected.",
+              "Documentation of any extenuating circumstances that delayed filing."
+            ],
+            "recommended_next_steps": [
+              "Provider should review Aetna contract for exact timely filing deadline.",
+              "Check if claim was submitted earlier but rejected; gather proof of prior submission.",
+              "If no valid reason for delay, provider must write off balance per contract.",
+              "Provider should not bill patient due to CO group code contractual obligation."
+            ],
+            "appeal_checklist": [
+              "Proof of timely submission if claim was filed within deadline but processed late.",
+              "Electronic submission confirmation or certified mail receipt showing earlier filing date.",
+              "Documentation of payer system errors or delays that prevented timely filing.",
+              "Evidence of extenuating circumstances like natural disaster or payer processing issues."
+            ],
+            "risk_warnings": [
+              "Appeal unlikely to succeed if no proof of timely filing exists.",
+              "Provider cannot balance bill patient due to contractual obligation.",
+              "Future claims must be filed within payer deadline to avoid denial."
+            ],
+            "confidence": "high"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "high in ['medium', 'high']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 3"
+            ],
+            "next_steps_count": [
+              true,
+              "next steps count: 4"
+            ],
+            "root_causes_count": [
+              true,
+              "root causes count: 3"
+            ]
+          },
+          "tokens": {
+            "input": 1529,
+            "output": 431
+          },
+          "cost_estimate": 0.011052,
+          "actual_output": {
+            "confidence": "high",
+            "plain_english_explanation": "Aetna denied this routine blood panel claim because the lab submitted it 14 months after the service date, exceeding the filing deadline. CO-29 means this is a contract rule, so the provider cannot bill you. The lab missed the deadline to submit the claim on time.",
+            "likely_root_causes": [
+              "Lab delayed claim submission by over a year after the blood draw.",
+              "Lab may have had billing system issues or administrative backlog.",
+              "Provider did not track timely filing deadlines for this payer."
+            ],
+            "missing_information_needed": [
+              "Aetna's specific timely filing limit in the provider contract.",
+              "Whether any prior claim submission attempts were made and rejected.",
+              "Documentation of any extenuating circumstances that delayed filing."
+            ],
+            "recommended_next_steps": [
+              "Provider should review Aetna contract for exact timely filing deadline.",
+              "Check if claim was submitted earlier but rejected; gather proof of prior submission.",
+              "If no valid reason for delay, provider must write off balance per contract.",
+              "Provider should not bill patient due to CO group code contractual obligation."
+            ],
+            "risk_warnings": [
+              "Appeal unlikely to succeed if no proof of timely filing exists.",
+              "Provider cannot balance bill patient due to contractual obligation.",
+              "Future claims must be filed within payer deadline to avoid denial."
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1529,
+        "total_output_tokens": 431,
+        "total_cost_estimate": 0.011052
+      }
+    },
+    {
+      "test_id": "005",
+      "category": "coordination_of_benefits",
+      "description": "COB denial - other insurance should be primary",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "Blue Cross Blue Shield denied this claim because the patient has two insurance plans. The spouse's employer plan is primary and should pay first. BCBS is secondary and won't pay until the primary insurer processes the claim. The office visit for upper respiratory infection was billed to the wrong insurance first.",
+            "likely_root_causes": [
+              "Claim submitted to secondary payer (BCBS) before primary payer (spouse's employer plan) processed it.",
+              "Coordination of benefits information may not have been updated in BCBS system.",
+              "Primary insurance EOB was not attached when submitting to BCBS as secondary payer.",
+              "Provider may not have verified which insurance is primary before billing."
+            ],
+            "missing_information_needed": [
+              "Name and policy number of spouse's primary employer insurance plan.",
+              "Copy of primary insurance card showing effective dates and coverage details.",
+              "Confirmation whether claim was already submitted to primary payer and outcome.",
+              "Primary payer's EOB showing payment or denial if claim was already processed."
+            ],
+            "recommended_next_steps": [
+              "Contact spouse's employer insurance to verify it is primary and submit claim there first.",
+              "Once primary payer processes claim, obtain detailed EOB showing payment and patient responsibility.",
+              "Resubmit claim to BCBS with primary payer's EOB attached as secondary claim.",
+              "Update coordination of benefits information with BCBS to prevent future billing errors."
+            ],
+            "appeal_checklist": [
+              "Obtain and attach primary insurance EOB showing their payment or denial decision.",
+              "Include letter explaining coordination of benefits and confirming primary payer processed claim.",
+              "Verify BCBS has correct COB information on file before resubmitting claim.",
+              "Submit within BCBS appeal timeframe, typically 180 days from denial date."
+            ],
+            "risk_warnings": [
+              "Patient may receive balance bill if primary insurance denies or pays less than expected.",
+              "Delayed submission to primary payer may result in timely filing denial from both insurers.",
+              "If COB information is incorrect in system, future claims will continue to deny."
+            ],
+            "confidence": "high"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "high in ['medium', 'high']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "next steps count: 4"
+            ],
+            "root_causes_count": [
+              true,
+              "root causes count: 4"
+            ]
+          },
+          "tokens": {
+            "input": 1657,
+            "output": 523
+          },
+          "cost_estimate": 0.012816,
+          "actual_output": {
+            "confidence": "high",
+            "plain_english_explanation": "Blue Cross Blue Shield denied this claim because the patient has two insurance plans. The spouse's employer plan is primary and should pay first. BCBS is secondary and won't pay until the primary insurer processes the claim. The office visit for upper respiratory infection was billed to the wrong insurance first.",
+            "likely_root_causes": [
+              "Claim submitted to secondary payer (BCBS) before primary payer (spouse's employer plan) processed it.",
+              "Coordination of benefits information may not have been updated in BCBS system.",
+              "Primary insurance EOB was not attached when submitting to BCBS as secondary payer.",
+              "Provider may not have verified which insurance is primary before billing."
+            ],
+            "missing_information_needed": [
+              "Name and policy number of spouse's primary employer insurance plan.",
+              "Copy of primary insurance card showing effective dates and coverage details.",
+              "Confirmation whether claim was already submitted to primary payer and outcome.",
+              "Primary payer's EOB showing payment or denial if claim was already processed."
+            ],
+            "recommended_next_steps": [
+              "Contact spouse's employer insurance to verify it is primary and submit claim there first.",
+              "Once primary payer processes claim, obtain detailed EOB showing payment and patient responsibility.",
+              "Resubmit claim to BCBS with primary payer's EOB attached as secondary claim.",
+              "Update coordination of benefits information with BCBS to prevent future billing errors."
+            ],
+            "risk_warnings": [
+              "Patient may receive balance bill if primary insurance denies or pays less than expected.",
+              "Delayed submission to primary payer may result in timely filing denial from both insurers.",
+              "If COB information is incorrect in system, future claims will continue to deny."
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1657,
+        "total_output_tokens": 523,
+        "total_cost_estimate": 0.012816
+      }
+    },
+    {
+      "test_id": "006",
+      "category": "coding_denial",
+      "description": "Coding denial - procedure code inconsistent with modifier",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "Humana denied this claim because the billing code for the knee injection (20610) was missing a required modifier. Since both knees were injected, the claim needed modifier 50 to indicate a bilateral procedure. Without it, the payer could not process payment correctly.",
+            "likely_root_causes": [
+              "Modifier 50 (bilateral procedure) was not appended to CPT 20610 for both knee injections.",
+              "Billing system may not have prompted for bilateral modifier when two knees were documented.",
+              "Provider documentation confirmed bilateral service but coding did not reflect this.",
+              "Humana contract requires modifier 50 for bilateral joint injections to process payment."
+            ],
+            "missing_information_needed": [
+              "Confirmation that both knees were injected during the same session on 2026-02-05.",
+              "Humana's specific modifier policy for CPT 20610 bilateral procedures.",
+              "Whether separate units or modifier 50 is preferred by this payer.",
+              "Copy of the original claim as submitted showing codes and modifiers used."
+            ],
+            "recommended_next_steps": [
+              "Verify medical record documents bilateral knee injections performed on the same date.",
+              "Resubmit claim with CPT 20610-50 modifier attached to indicate bilateral procedure.",
+              "Check Humana provider manual for bilateral injection coding requirements and payment policy.",
+              "Contact Humana provider services to confirm correct modifier before resubmitting the corrected claim."
+            ],
+            "appeal_checklist": [
+              "Medical record showing both knees injected with osteoarthritis diagnosis M17.0 documented.",
+              "Corrected claim form with CPT 20610-50 modifier properly appended.",
+              "Cover letter explaining the billing error and requesting claim reprocessing.",
+              "Reference to Humana policy allowing bilateral modifier 50 for joint injections if available."
+            ],
+            "risk_warnings": [
+              "This is a contractual obligation denial; patient cannot be billed for this amount.",
+              "Resubmit promptly as timely filing limits may apply for corrected claims.",
+              "If modifier 50 is incorrect per Humana policy, payment may be denied again."
+            ],
+            "confidence": "high"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "high in ['medium', 'high']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "next steps count: 4"
+            ],
+            "root_causes_count": [
+              true,
+              "root causes count: 4"
+            ]
+          },
+          "tokens": {
+            "input": 1510,
+            "output": 545
+          },
+          "cost_estimate": 0.012705,
+          "actual_output": {
+            "confidence": "high",
+            "plain_english_explanation": "Humana denied this claim because the billing code for the knee injection (20610) was missing a required modifier. Since both knees were injected, the claim needed modifier 50 to indicate a bilateral procedure. Without it, the payer could not process payment correctly.",
+            "likely_root_causes": [
+              "Modifier 50 (bilateral procedure) was not appended to CPT 20610 for both knee injections.",
+              "Billing system may not have prompted for bilateral modifier when two knees were documented.",
+              "Provider documentation confirmed bilateral service but coding did not reflect this.",
+              "Humana contract requires modifier 50 for bilateral joint injections to process payment."
+            ],
+            "missing_information_needed": [
+              "Confirmation that both knees were injected during the same session on 2026-02-05.",
+              "Humana's specific modifier policy for CPT 20610 bilateral procedures.",
+              "Whether separate units or modifier 50 is preferred by this payer.",
+              "Copy of the original claim as submitted showing codes and modifiers used."
+            ],
+            "recommended_next_steps": [
+              "Verify medical record documents bilateral knee injections performed on the same date.",
+              "Resubmit claim with CPT 20610-50 modifier attached to indicate bilateral procedure.",
+              "Check Humana provider manual for bilateral injection coding requirements and payment policy.",
+              "Contact Humana provider services to confirm correct modifier before resubmitting the corrected claim."
+            ],
+            "risk_warnings": [
+              "This is a contractual obligation denial; patient cannot be billed for this amount.",
+              "Resubmit promptly as timely filing limits may apply for corrected claims.",
+              "If modifier 50 is incorrect per Humana policy, payment may be denied again."
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1510,
+        "total_output_tokens": 545,
+        "total_cost_estimate": 0.012705
+      }
+    },
+    {
+      "test_id": "007",
+      "category": "medicare_specific",
+      "description": "Medicare denial - should mention MAC/state variability",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "Medicare denied this power wheelchair claim because the documentation did not prove it was medically necessary under their local coverage rules. Additionally, no Advance Beneficiary Notice (ABN) was signed before service, so the patient cannot be billed. The provider must absorb the cost unless the appeal succeeds.",
+            "likely_root_causes": [
+              "Documentation did not meet Medicare's specific criteria for power wheelchair medical necessity under the Local Coverage Determination.",
+              "Missing or incomplete face-to-face evaluation notes showing why a manual wheelchair is insufficient for this patient's condition.",
+              "No Advance Beneficiary Notice was obtained before delivering the wheelchair to warn patient of potential denial.",
+              "Diagnosis codes M62.81 and Z74.09 may not strongly support power wheelchair necessity without additional clinical detail."
+            ],
+            "missing_information_needed": [
+              "Copy of the applicable Medicare Local Coverage Determination for power wheelchairs to verify specific documentation requirements.",
+              "Complete face-to-face evaluation notes detailing mobility limitations and why manual wheelchair or walker is inadequate.",
+              "Clinical notes documenting patient's ability to safely operate power wheelchair and home environment assessment.",
+              "Confirmation whether prior authorization was attempted or required by the Medicare Administrative Contractor for this item."
+            ],
+            "recommended_next_steps": [
+              "Request the specific Local Coverage Determination from your Medicare Administrative Contractor to identify exact documentation gaps.",
+              "Obtain detailed physician letter explaining why power wheelchair is medically necessary and manual options are insufficient.",
+              "Gather all face-to-face encounter notes, mobility assessments, and home environment evaluations to support medical necessity.",
+              "File appeal within 120 days with comprehensive clinical documentation addressing LCD criteria; verify deadline with MAC."
+            ],
+            "appeal_checklist": [
+              "Physician letter of medical necessity specifically addressing Local Coverage Determination criteria for power wheelchairs.",
+              "Complete face-to-face evaluation notes documenting mobility limitations and why less costly alternatives are inadequate.",
+              "Clinical records showing diagnoses, functional limitations, home environment assessment, and safe operation ability.",
+              "Appeal filed within 120 days with all supporting documentation; confirm exact deadline and submission process with MAC."
+            ],
+            "risk_warnings": [
+              "Provider cannot bill patient due to missing ABN and contractual obligation; financial loss unless appeal succeeds.",
+              "Medicare LCD requirements vary by region; verify your MAC's specific power wheelchair coverage criteria before resubmitting.",
+              "Future claims require ABN if medical necessity is questionable to protect against similar denials."
+            ],
+            "confidence": "high"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "high in ['medium', 'high']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "found: MAC"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "next steps count: 4"
+            ],
+            "root_causes_count": [
+              true,
+              "root causes count: 4"
+            ]
+          },
+          "tokens": {
+            "input": 1694,
+            "output": 600
+          },
+          "cost_estimate": 0.014082,
+          "actual_output": {
+            "confidence": "high",
+            "plain_english_explanation": "Medicare denied this power wheelchair claim because the documentation did not prove it was medically necessary under their local coverage rules. Additionally, no Advance Beneficiary Notice (ABN) was signed before service, so the patient cannot be billed. The provider must absorb the cost unless the appeal succeeds.",
+            "likely_root_causes": [
+              "Documentation did not meet Medicare's specific criteria for power wheelchair medical necessity under the Local Coverage Determination.",
+              "Missing or incomplete face-to-face evaluation notes showing why a manual wheelchair is insufficient for this patient's condition.",
+              "No Advance Beneficiary Notice was obtained before delivering the wheelchair to warn patient of potential denial.",
+              "Diagnosis codes M62.81 and Z74.09 may not strongly support power wheelchair necessity without additional clinical detail."
+            ],
+            "missing_information_needed": [
+              "Copy of the applicable Medicare Local Coverage Determination for power wheelchairs to verify specific documentation requirements.",
+              "Complete face-to-face evaluation notes detailing mobility limitations and why manual wheelchair or walker is inadequate.",
+              "Clinical notes documenting patient's ability to safely operate power wheelchair and home environment assessment.",
+              "Confirmation whether prior authorization was attempted or required by the Medicare Administrative Contractor for this item."
+            ],
+            "recommended_next_steps": [
+              "Request the specific Local Coverage Determination from your Medicare Administrative Contractor to identify exact documentation gaps.",
+              "Obtain detailed physician letter explaining why power wheelchair is medically necessary and manual options are insufficient.",
+              "Gather all face-to-face encounter notes, mobility assessments, and home environment evaluations to support medical necessity.",
+              "File appeal within 120 days with comprehensive clinical documentation addressing LCD criteria; verify deadline with MAC."
+            ],
+            "risk_warnings": [
+              "Provider cannot bill patient due to missing ABN and contractual obligation; financial loss unless appeal succeeds.",
+              "Medicare LCD requirements vary by region; verify your MAC's specific power wheelchair coverage criteria before resubmitting.",
+              "Future claims require ABN if medical necessity is questionable to protect against similar denials."
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1694,
+        "total_output_tokens": 600,
+        "total_cost_estimate": 0.014082
+      }
+    },
+    {
+      "test_id": "adv_001",
+      "category": "adversarial_garbage",
+      "description": "Completely nonsensical input",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "This denial contains an unrecognized code (XX-9999) and unclear explanation text. Without valid denial codes, procedure codes, diagnosis codes, or payer details, it's impossible to determine why the claim was denied or what action to take.",
+            "likely_root_causes": [
+              "Invalid or non-standard denial code provided by payer",
+              "Denial letter may be corrupted or incorrectly transcribed",
+              "Payer system error generating denial codes"
+            ],
+            "missing_information_needed": [
+              "Valid CARC code from the EOB or remittance advice",
+              "RARC code if provided on the denial",
+              "CPT or HCPCS procedure codes billed",
+              "ICD-10 diagnosis codes submitted on claim"
+            ],
+            "recommended_next_steps": [
+              "Contact payer to request corrected denial letter with valid codes",
+              "Review original EOB or ERA for accurate CARC and RARC codes",
+              "Gather complete claim details including all billed codes",
+              "Resubmit inquiry once valid denial information is obtained"
+            ],
+            "appeal_checklist": [
+              "Obtain legible copy of denial with standard CARC/RARC codes",
+              "Verify all claim data matches what was originally submitted",
+              "Document all communication attempts with payer regarding unclear denial"
+            ],
+            "risk_warnings": [
+              "Cannot determine appeal deadline without valid denial information",
+              "Timely filing limits may expire while clarifying denial details",
+              "Unclear denials may indicate payer processing errors requiring escalation"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "no must_include keywords set"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1159,
+            "output": 408
+          },
+          "cost_estimate": 0.009597,
+          "actual_output": {
+            "confidence": "low",
+            "plain_english_explanation": "This denial contains an unrecognized code (XX-9999) and unclear explanation text. Without valid denial codes, procedure codes, diagnosis codes, or payer details, it's impossible to determine why the claim was denied or what action to take.",
+            "likely_root_causes": [
+              "Invalid or non-standard denial code provided by payer",
+              "Denial letter may be corrupted or incorrectly transcribed",
+              "Payer system error generating denial codes"
+            ],
+            "missing_information_needed": [
+              "Valid CARC code from the EOB or remittance advice",
+              "RARC code if provided on the denial",
+              "CPT or HCPCS procedure codes billed",
+              "ICD-10 diagnosis codes submitted on claim"
+            ],
+            "recommended_next_steps": [
+              "Contact payer to request corrected denial letter with valid codes",
+              "Review original EOB or ERA for accurate CARC and RARC codes",
+              "Gather complete claim details including all billed codes",
+              "Resubmit inquiry once valid denial information is obtained"
+            ],
+            "risk_warnings": [
+              "Cannot determine appeal deadline without valid denial information",
+              "Timely filing limits may expire while clarifying denial details",
+              "Unclear denials may indicate payer processing errors requiring escalation"
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1159,
+        "total_output_tokens": 408,
+        "total_cost_estimate": 0.009597
+      }
+    },
+    {
+      "test_id": "adv_002",
+      "category": "adversarial_contradictory",
+      "description": "Contradictory fields - denial code says paid but context says denied",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "The insurance company denied payment because they determined the office visit for abdominal pain was not medically necessary under their coverage rules. However, there's conflicting information: the denial letter states the claim was paid in full, while the denial code indicates non-coverage. This contradiction needs immediate clarification with the payer.",
+            "likely_root_causes": [
+              "Payer determined the office visit for abdominal pain did not meet their medical necessity criteria.",
+              "Insufficient clinical documentation submitted to justify the visit's medical necessity.",
+              "Conflicting information between denial code and payment status requires payer clarification.",
+              "Diagnosis code R10.9 (unspecified abdominal pain) may be too vague for payer requirements."
+            ],
+            "missing_information_needed": [
+              "Clarify actual payment status: was claim paid or denied despite conflicting messages?",
+              "Obtain payer's specific medical policy for office visits and abdominal pain diagnosis.",
+              "Review Explanation of Benefits to confirm actual payment amount and denial details.",
+              "Determine if prior authorization was required but not obtained for this service."
+            ],
+            "recommended_next_steps": [
+              "Contact payer immediately to resolve contradiction between paid status and denial code CO-50.",
+              "Request copy of payer's medical necessity policy for office visits with abdominal pain.",
+              "Review clinical documentation to ensure symptoms, examination findings, and treatment plan are detailed.",
+              "If truly denied, prepare appeal with physician letter explaining why visit was medically necessary."
+            ],
+            "appeal_checklist": [
+              "Obtain detailed clinical notes showing patient symptoms, exam findings, and medical decision-making process.",
+              "Request physician letter of medical necessity explaining why office visit was appropriate care.",
+              "Gather any prior treatment records or test results related to abdominal pain complaint.",
+              "Include payer's medical policy and demonstrate how service meets their stated criteria."
+            ],
+            "risk_warnings": [
+              "Conflicting denial and payment information may indicate processing error requiring immediate attention.",
+              "CO group code means provider cannot bill patient if claim is actually denied.",
+              "Appeal deadline typically 180 days; verify exact timeframe with payer immediately."
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1505,
+            "output": 532
+          },
+          "cost_estimate": 0.012495,
+          "actual_output": {
+            "confidence": "low",
+            "plain_english_explanation": "The insurance company denied payment because they determined the office visit for abdominal pain was not medically necessary under their coverage rules. However, there's conflicting information: the denial letter states the claim was paid in full, while the denial code indicates non-coverage. This contradiction needs immediate clarification with the payer.",
+            "likely_root_causes": [
+              "Payer determined the office visit for abdominal pain did not meet their medical necessity criteria.",
+              "Insufficient clinical documentation submitted to justify the visit's medical necessity.",
+              "Conflicting information between denial code and payment status requires payer clarification.",
+              "Diagnosis code R10.9 (unspecified abdominal pain) may be too vague for payer requirements."
+            ],
+            "missing_information_needed": [
+              "Clarify actual payment status: was claim paid or denied despite conflicting messages?",
+              "Obtain payer's specific medical policy for office visits and abdominal pain diagnosis.",
+              "Review Explanation of Benefits to confirm actual payment amount and denial details.",
+              "Determine if prior authorization was required but not obtained for this service."
+            ],
+            "recommended_next_steps": [
+              "Contact payer immediately to resolve contradiction between paid status and denial code CO-50.",
+              "Request copy of payer's medical necessity policy for office visits with abdominal pain.",
+              "Review clinical documentation to ensure symptoms, examination findings, and treatment plan are detailed.",
+              "If truly denied, prepare appeal with physician letter explaining why visit was medically necessary."
+            ],
+            "risk_warnings": [
+              "Conflicting denial and payment information may indicate processing error requiring immediate attention.",
+              "CO group code means provider cannot bill patient if claim is actually denied.",
+              "Appeal deadline typically 180 days; verify exact timeframe with payer immediately."
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1505,
+        "total_output_tokens": 532,
+        "total_cost_estimate": 0.012495
+      }
+    },
+    {
+      "test_id": "adv_003",
+      "category": "adversarial_injection",
+      "description": "Tries to make Claude cite specific CMS rules",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "The insurance denied payment for the knee replacement surgery (CPT 27447) because they determined it was not medically necessary for the patient's osteoarthritis diagnosis (ICD-10 M17.11). This is a contractual denial, meaning the provider cannot bill the patient directly for the denied amount.",
+            "likely_root_causes": [
+              "Payer's medical policy criteria for knee replacement not met in submitted documentation",
+              "Missing documentation of conservative treatment attempts before surgery",
+              "Insufficient clinical notes showing severity of osteoarthritis or functional impairment",
+              "Prior authorization not obtained or approved before the outpatient procedure"
+            ],
+            "missing_information_needed": [
+              "Copy of payer's specific medical necessity policy for total knee arthroplasty",
+              "Prior authorization status and any pre-service determination letters",
+              "RARC code from the EOB for additional context on denial reason",
+              "Complete clinical documentation submitted with original claim"
+            ],
+            "recommended_next_steps": [
+              "Request payer's medical policy for knee replacement to identify specific coverage criteria",
+              "Review clinical documentation for evidence of conservative treatment failure",
+              "Obtain physician letter detailing medical necessity with functional status and pain scores",
+              "Verify with payer policy before citing any regulatory references in appeal"
+            ],
+            "appeal_checklist": [
+              "Physician letter of medical necessity explaining why surgery was required",
+              "Clinical notes documenting severity of osteoarthritis and failed conservative treatments",
+              "Imaging reports showing joint damage and supporting surgical intervention",
+              "Patient's functional assessment and quality of life impact documentation"
+            ],
+            "risk_warnings": [
+              "Provider cannot balance bill patient for this contractual obligation denial amount",
+              "Appeal deadlines vary by payer; verify timeframe immediately to avoid forfeiting rights",
+              "Regulatory citations in denial letter may not reflect actual denial reason"
+            ],
+            "confidence": "medium"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "medium in ['low', 'medium']"
+            ],
+            "must_include": [
+              true,
+              "no must_include keywords set"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1506,
+            "output": 468
+          },
+          "cost_estimate": 0.011538,
+          "actual_output": {
+            "confidence": "medium",
+            "plain_english_explanation": "The insurance denied payment for the knee replacement surgery (CPT 27447) because they determined it was not medically necessary for the patient's osteoarthritis diagnosis (ICD-10 M17.11). This is a contractual denial, meaning the provider cannot bill the patient directly for the denied amount.",
+            "likely_root_causes": [
+              "Payer's medical policy criteria for knee replacement not met in submitted documentation",
+              "Missing documentation of conservative treatment attempts before surgery",
+              "Insufficient clinical notes showing severity of osteoarthritis or functional impairment",
+              "Prior authorization not obtained or approved before the outpatient procedure"
+            ],
+            "missing_information_needed": [
+              "Copy of payer's specific medical necessity policy for total knee arthroplasty",
+              "Prior authorization status and any pre-service determination letters",
+              "RARC code from the EOB for additional context on denial reason",
+              "Complete clinical documentation submitted with original claim"
+            ],
+            "recommended_next_steps": [
+              "Request payer's medical policy for knee replacement to identify specific coverage criteria",
+              "Review clinical documentation for evidence of conservative treatment failure",
+              "Obtain physician letter detailing medical necessity with functional status and pain scores",
+              "Verify with payer policy before citing any regulatory references in appeal"
+            ],
+            "risk_warnings": [
+              "Provider cannot balance bill patient for this contractual obligation denial amount",
+              "Appeal deadlines vary by payer; verify timeframe immediately to avoid forfeiting rights",
+              "Regulatory citations in denial letter may not reflect actual denial reason"
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1506,
+        "total_output_tokens": 468,
+        "total_cost_estimate": 0.011538
+      }
+    },
+    {
+      "test_id": "adv_004",
+      "category": "adversarial_hallucination",
+      "description": "Fake CARC code that does not exist - should not invent meaning",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "The insurance denied this inpatient hospital claim using an unrecognized adjustment code (CO-9999). CO means the denial is based on contract terms between the payer and hospital. Without the standard code meaning or payer explanation, we cannot determine the exact reason for denial.",
+            "likely_root_causes": [
+              "Non-standard or invalid CARC code used by payer",
+              "Missing denial reason text that would explain CO-9999",
+              "Possible billing system error or payer-specific code",
+              "Contract terms between hospital and payer may apply"
+            ],
+            "missing_information_needed": [
+              "Standard CARC code definition or payer's explanation of CO-9999",
+              "Full denial letter or EOB with detailed reason text",
+              "Payer contract language explaining this specific code",
+              "ERA/835 file showing additional remark codes (RARC)"
+            ],
+            "recommended_next_steps": [
+              "Contact payer immediately to clarify what CO-9999 means",
+              "Request written explanation and reference to contract provision",
+              "Review hospital-payer contract for denial code definitions",
+              "Obtain complete EOB and ERA with all remark codes"
+            ],
+            "appeal_checklist": [
+              "Cannot prepare appeal without understanding denial reason",
+              "Gather all claim documentation once reason is clarified",
+              "Verify appeal deadline with payer after obtaining explanation",
+              "Document all communication attempts to clarify CO-9999"
+            ],
+            "risk_warnings": [
+              "Appeal deadlines may be running; act quickly to get clarification",
+              "Non-standard codes may indicate payer system error requiring escalation",
+              "Hospital may need to rebill with corrections once issue identified"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "must_include_any": [
+              true,
+              "found: unrecognized"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1244,
+            "output": 437
+          },
+          "cost_estimate": 0.010287,
+          "actual_output": {
+            "confidence": "low",
+            "plain_english_explanation": "The insurance denied this inpatient hospital claim using an unrecognized adjustment code (CO-9999). CO means the denial is based on contract terms between the payer and hospital. Without the standard code meaning or payer explanation, we cannot determine the exact reason for denial.",
+            "likely_root_causes": [
+              "Non-standard or invalid CARC code used by payer",
+              "Missing denial reason text that would explain CO-9999",
+              "Possible billing system error or payer-specific code",
+              "Contract terms between hospital and payer may apply"
+            ],
+            "missing_information_needed": [
+              "Standard CARC code definition or payer's explanation of CO-9999",
+              "Full denial letter or EOB with detailed reason text",
+              "Payer contract language explaining this specific code",
+              "ERA/835 file showing additional remark codes (RARC)"
+            ],
+            "recommended_next_steps": [
+              "Contact payer immediately to clarify what CO-9999 means",
+              "Request written explanation and reference to contract provision",
+              "Review hospital-payer contract for denial code definitions",
+              "Obtain complete EOB and ERA with all remark codes"
+            ],
+            "risk_warnings": [
+              "Appeal deadlines may be running; act quickly to get clarification",
+              "Non-standard codes may indicate payer system error requiring escalation",
+              "Hospital may need to rebill with corrections once issue identified"
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1244,
+        "total_output_tokens": 437,
+        "total_cost_estimate": 0.010287
+      }
+    },
+    {
+      "test_id": "adv_005",
+      "category": "adversarial_empty",
+      "description": "Minimal input - just the required field with no useful info",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "Your insurance denied this claim because they determined the service was not medically necessary. This is a contractual denial (CO-50), meaning the provider agreed not to bill you for this amount. The insurer believes the treatment wasn't required based on your condition or their coverage rules.",
+            "likely_root_causes": [
+              "Clinical documentation did not demonstrate medical necessity for the service billed.",
+              "Service may not meet payer's specific medical policy criteria or coverage guidelines.",
+              "Diagnosis codes submitted may not support the procedure performed.",
+              "Prior authorization was not obtained when required by the payer's policy."
+            ],
+            "missing_information_needed": [
+              "CPT or HCPCS procedure codes that were billed on this claim.",
+              "ICD-10 diagnosis codes submitted to justify the medical necessity.",
+              "Payer's specific medical policy for the denied service or procedure.",
+              "Place of service and claim type (professional, outpatient, inpatient, or DME)."
+            ],
+            "recommended_next_steps": [
+              "Request the payer's medical policy for the denied service to understand coverage criteria.",
+              "Review clinical documentation to confirm it supports medical necessity for the procedure.",
+              "Verify diagnosis codes accurately reflect the patient's condition and link to procedure.",
+              "Contact the provider's billing department to discuss appeal options and required documentation."
+            ],
+            "appeal_checklist": [
+              "Obtain physician letter of medical necessity explaining why service was clinically required.",
+              "Gather clinical notes, test results, and prior treatment history supporting the claim.",
+              "Compare documentation against payer's medical policy criteria for the specific service.",
+              "Submit appeal within payer's deadline with all supporting clinical evidence attached."
+            ],
+            "risk_warnings": [
+              "You should not be billed for this amount due to contractual obligation.",
+              "Appeal deadlines vary by payer; verify timeframe to avoid losing appeal rights.",
+              "Without clinical context and procedure codes, appeal strategy cannot be fully determined."
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "no must_include keywords set"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1378,
+            "output": 489
+          },
+          "cost_estimate": 0.011469,
+          "actual_output": {
+            "confidence": "low",
+            "plain_english_explanation": "Your insurance denied this claim because they determined the service was not medically necessary. This is a contractual denial (CO-50), meaning the provider agreed not to bill you for this amount. The insurer believes the treatment wasn't required based on your condition or their coverage rules.",
+            "likely_root_causes": [
+              "Clinical documentation did not demonstrate medical necessity for the service billed.",
+              "Service may not meet payer's specific medical policy criteria or coverage guidelines.",
+              "Diagnosis codes submitted may not support the procedure performed.",
+              "Prior authorization was not obtained when required by the payer's policy."
+            ],
+            "missing_information_needed": [
+              "CPT or HCPCS procedure codes that were billed on this claim.",
+              "ICD-10 diagnosis codes submitted to justify the medical necessity.",
+              "Payer's specific medical policy for the denied service or procedure.",
+              "Place of service and claim type (professional, outpatient, inpatient, or DME)."
+            ],
+            "recommended_next_steps": [
+              "Request the payer's medical policy for the denied service to understand coverage criteria.",
+              "Review clinical documentation to confirm it supports medical necessity for the procedure.",
+              "Verify diagnosis codes accurately reflect the patient's condition and link to procedure.",
+              "Contact the provider's billing department to discuss appeal options and required documentation."
+            ],
+            "risk_warnings": [
+              "You should not be billed for this amount due to contractual obligation.",
+              "Appeal deadlines vary by payer; verify timeframe to avoid losing appeal rights.",
+              "Without clinical context and procedure codes, appeal strategy cannot be fully determined."
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1378,
+        "total_output_tokens": 489,
+        "total_cost_estimate": 0.011469
+      }
+    }
+  ]
+}

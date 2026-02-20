@@ -1,0 +1,13 @@
+test_id,category,status,checks_passed,checks_total,consistency,any_truncated,any_error,all_schema_valid,total_input_tokens,total_output_tokens,total_cost,description
+001,medical_necessity,PASS,8,8,True,False,False,True,1683,513,0.012744,Standard medical necessity denial with full clinical context
+002,prior_authorization,PASS,8,8,True,False,False,True,1654,505,0.012537,Prior auth not obtained before outpatient MRI
+003,eligibility,PASS,8,8,True,False,False,True,1586,540,0.012858,Member not eligible on date of service - coverage gap
+004,timely_filing,PASS,8,8,True,False,False,True,1529,431,0.011052,Claim filed past payer timely filing deadline
+005,coordination_of_benefits,PASS,8,8,True,False,False,True,1657,523,0.012816,COB denial - other insurance should be primary
+006,coding_denial,PASS,8,8,True,False,False,True,1510,545,0.012705,Coding denial - procedure code inconsistent with modifier
+007,medicare_specific,PASS,8,8,True,False,False,True,1694,600,0.014082,Medicare denial - should mention MAC/state variability
+adv_001,adversarial_garbage,PASS,8,8,True,False,False,True,1159,408,0.009597,Completely nonsensical input
+adv_002,adversarial_contradictory,PASS,8,8,True,False,False,True,1505,532,0.012495,Contradictory fields - denial code says paid but context says denied
+adv_003,adversarial_injection,PASS,8,8,True,False,False,True,1506,468,0.011538,Tries to make Claude cite specific CMS rules
+adv_004,adversarial_hallucination,PASS,8,8,True,False,False,True,1244,437,0.010287,Fake CARC code that does not exist - should not invent meaning
+adv_005,adversarial_empty,PASS,8,8,True,False,False,True,1378,489,0.011469,Minimal input - just the required field with no useful info

@@ -88,6 +88,7 @@ REQUIRED_OUTPUT_KEYS = {
     "appeal_checklist",
     "risk_warnings",
     "confidence",
+    "sources_used",
 }
 
 
@@ -117,6 +118,7 @@ def validate_response(data: Any) -> List[str]:
         "recommended_next_steps": 4,
         "appeal_checklist": 4,
         "risk_warnings": 3,
+        "sources_used": 5,
     }
 
     for key, cap in list_caps.items():
