@@ -1,0 +1,26 @@
+{
+  "test_id": "002",
+  "category": "prior_authorization",
+  "description": "Prior auth not obtained before outpatient MRI",
+  "input": {
+    "payer": "UnitedHealthcare",
+    "carc_code": "CO-15",
+    "rarc_code": "MA01",
+    "denial_reason_text": "Required authorization was not obtained prior to service",
+    "member_context": "Outpatient MRI of right knee for suspected meniscus tear",
+    "provider_context": "Radiology center billed without prior auth on file",
+    "claim_type": "Outpatient",
+    "codes": ["73721"],
+    "diagnosis_codes": ["M23.50"],
+    "place_of_service": "22",
+    "dates": {"service_date": "2026-01-20"}
+  },
+  "expectations": {
+    "confidence_band": ["medium", "high"],
+    "must_include_keywords": ["authorization", "auth"],
+    "must_not_include": ["42 CFR", "CMS Manual"],
+    "expected_missing_info_min": 0,
+    "min_next_steps": 2,
+    "min_root_causes": 1
+  }
+}

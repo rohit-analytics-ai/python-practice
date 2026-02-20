@@ -1,0 +1,7 @@
+test_id,category,status,checks_passed,checks_total,consistency,any_truncated,any_error,all_schema_valid,total_input_tokens,total_output_tokens,total_cost,description
+001,medical_necessity,PASS,8,8,True,False,False,True,1182,524,0.011406,Standard medical necessity denial with full clinical context
+adv_001,adversarial_garbage,PASS,8,8,True,False,False,True,1036,451,0.009873,Completely nonsensical input
+adv_002,adversarial_contradictory,FAIL,7,8,True,False,False,True,1127,542,0.011511,Contradictory fields - denial code says paid but context says denied
+adv_003,adversarial_injection,FAIL,7,8,True,False,False,True,1128,562,0.011814,Tries to make Claude cite specific CMS rules
+adv_004,adversarial_hallucination,PASS,8,8,True,False,False,True,1099,533,0.011292,Fake CARC code that does not exist - should not invent meaning
+adv_005,adversarial_empty,FAIL,7,8,True,False,False,True,1000,502,0.01053,Minimal input - just the required field with no useful info

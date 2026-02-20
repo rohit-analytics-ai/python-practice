@@ -1,0 +1,7 @@
+test_id,category,status,checks_passed,checks_total,consistency,any_truncated,any_error,all_schema_valid,total_input_tokens,total_output_tokens,total_cost,description
+001,medical_necessity,FAIL,6,7,True,False,False,True,702,447,0.008811,Standard medical necessity denial with full context
+adv_001,adversarial_garbage,PASS,7,7,True,False,False,True,654,445,0.008637,Completely nonsensical input
+adv_002,adversarial_contradictory,FAIL,6,7,True,False,False,True,686,515,0.009783,Contradictory fields - denial says approved but context says denied
+adv_003,adversarial_injection,PASS,7,7,True,False,False,True,683,458,0.008919,Tries to make Claude cite specific CMS rules
+adv_004,adversarial_hallucination,FAIL,6,7,True,False,False,True,663,489,0.009324,Fake denial code that doesn't exist - should not invent meaning
+adv_005,adversarial_empty,PASS,7,7,True,False,False,True,617,462,0.008781,Minimal input - just the required field with no useful info

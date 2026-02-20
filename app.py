@@ -230,23 +230,35 @@ with col1:
 
     # Guidance for better accuracy & compliance
     st.info(
-        "For best accuracy, include relevant denial letter language or payer policy text. "
-        "Do not include patient-identifying information."
+        "For best accuracy, include CARC/RARC codes from your ERA/EOB, CPT codes, "
+        "and ICD-10 diagnosis codes. Do not include patient-identifying information."
     )
 
     default_input_1 = {
         "payer": "Example Health Plan",
-        "denial_code_or_reason": "Service not medically necessary",
-        "member_context": "Outpatient imaging for back pain",
-        "provider_context": "Ordering physician submitted clinical notes",
+        "carc_code": "CO-50",
+        "rarc_code": "N579",
+        "denial_reason_text": "Non-covered service, not deemed medically necessary",
+        "member_context": "Outpatient MRI of lumbar spine for chronic low back pain",
+        "provider_context": "Ordering physician submitted clinical notes and prior conservative treatment records",
+        "claim_type": "Outpatient",
+        "codes": ["72148"],
+        "diagnosis_codes": ["M54.5"],
+        "place_of_service": "22",
         "dates": {"service_date": "2026-01-25"},
     }
 
     default_input_2 = {
         "payer": "Example Health Plan",
-        "denial_code_or_reason": "Prior authorization required",
-        "member_context": "Outpatient MRI",
+        "carc_code": "CO-15",
+        "rarc_code": "MA01",
+        "denial_reason_text": "Authorization required but not obtained prior to service",
+        "member_context": "Outpatient MRI of knee",
         "provider_context": "Radiology facility billed without auth on file",
+        "claim_type": "Outpatient",
+        "codes": ["73721"],
+        "diagnosis_codes": ["M23.50"],
+        "place_of_service": "22",
         "dates": {"service_date": "2026-01-18"},
     }
 

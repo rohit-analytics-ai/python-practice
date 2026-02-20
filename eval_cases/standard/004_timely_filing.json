@@ -1,0 +1,25 @@
+{
+  "test_id": "004",
+  "category": "timely_filing",
+  "description": "Claim filed past payer timely filing deadline",
+  "input": {
+    "payer": "Aetna",
+    "carc_code": "CO-29",
+    "denial_reason_text": "The time limit for filing has expired",
+    "member_context": "Outpatient lab work for routine blood panel",
+    "provider_context": "Lab submitted claim 14 months after date of service",
+    "claim_type": "Outpatient",
+    "codes": ["80053"],
+    "diagnosis_codes": ["Z13.220"],
+    "place_of_service": "81",
+    "dates": {"service_date": "2024-11-15", "claim_filed_date": "2026-01-20"}
+  },
+  "expectations": {
+    "confidence_band": ["medium", "high"],
+    "must_include_keywords": ["timely", "filing"],
+    "must_not_include": ["42 CFR", "CMS Manual"],
+    "expected_missing_info_min": 0,
+    "min_next_steps": 1,
+    "min_root_causes": 1
+  }
+}

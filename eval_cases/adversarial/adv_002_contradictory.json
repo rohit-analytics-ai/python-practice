@@ -1,0 +1,21 @@
+{
+  "test_id": "adv_002",
+  "category": "adversarial_contradictory",
+  "description": "Contradictory fields - denial code says paid but context says denied",
+  "input": {
+    "carc_code": "CO-50",
+    "denial_reason_text": "Claim approved and paid in full",
+    "member_context": "Service was denied for medical necessity",
+    "provider_context": "Payment received",
+    "claim_type": "Outpatient",
+    "codes": ["99213"],
+    "diagnosis_codes": ["R10.9"],
+    "place_of_service": "11",
+    "dates": {"service_date": "2026-01-10"}
+  },
+  "expectations": {
+    "confidence_band": ["low"],
+    "must_include_keywords": ["clarif"],
+    "expected_missing_info_min": 1
+  }
+}

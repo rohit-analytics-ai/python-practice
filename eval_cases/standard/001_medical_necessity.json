@@ -1,0 +1,26 @@
+{
+  "test_id": "001",
+  "category": "medical_necessity",
+  "description": "Standard medical necessity denial with full clinical context",
+  "input": {
+    "payer": "Anthem Blue Cross",
+    "carc_code": "CO-50",
+    "rarc_code": "N579",
+    "denial_reason_text": "Non-covered service, not deemed medically necessary",
+    "member_context": "Outpatient MRI of lumbar spine for chronic low back pain, 6 months duration",
+    "provider_context": "Ordering physician submitted clinical notes and 8 weeks of prior conservative treatment",
+    "claim_type": "Outpatient",
+    "codes": ["72148"],
+    "diagnosis_codes": ["M54.5"],
+    "place_of_service": "22",
+    "dates": {"service_date": "2026-01-15"}
+  },
+  "expectations": {
+    "confidence_band": ["medium", "high"],
+    "must_include_keywords": ["medical necessity", "appeal"],
+    "must_not_include": ["42 CFR", "CMS Manual"],
+    "expected_missing_info_min": 0,
+    "min_next_steps": 2,
+    "min_root_causes": 1
+  }
+}

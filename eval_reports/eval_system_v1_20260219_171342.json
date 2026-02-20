@@ -1,0 +1,607 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-19T22:13:42.714400+00:00",
+    "prompt_version": "system_v1",
+    "model": "claude-sonnet-4-5",
+    "max_tokens": 900,
+    "temperature": 0.0,
+    "runs_per_case": 1,
+    "total_cases": 6
+  },
+  "results": [
+    {
+      "test_id": "001",
+      "category": "medical_necessity",
+      "description": "Standard medical necessity denial with full context",
+      "status": "FAIL",
+      "overall_pass": false,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "XYZ Blue Cross denied the lumbar spine MRI because they determined it wasn't medically necessary for chronic low back pain. This usually means the insurer's criteria weren't met, such as requiring more conservative treatment first or lacking specific clinical findings that justify advanced imaging.",
+            "likely_root_causes": [
+              "Insufficient documentation of failed conservative treatments like physical therapy or medications",
+              "Missing red flag symptoms that would justify immediate imaging",
+              "Payer policy requires specific duration of symptoms before approving MRI",
+              "Clinical notes may not clearly demonstrate medical necessity per payer criteria"
+            ],
+            "missing_information_needed": [
+              "XYZ Blue Cross medical necessity criteria for lumbar MRI",
+              "Documentation showing duration and severity of conservative treatment attempts",
+              "Specific red flag symptoms documented in clinical notes",
+              "Prior authorization requirements and whether one was obtained"
+            ],
+            "recommended_next_steps": [
+              "Request XYZ Blue Cross written medical policy for lumbar spine MRI coverage",
+              "Review EOB for specific policy citations and appeal deadline",
+              "Obtain detailed clinical documentation showing failed conservative care duration",
+              "File formal appeal with peer-to-peer review request within deadline"
+            ],
+            "appeal_checklist": [
+              "Submit complete treatment timeline showing conservative care attempts and outcomes",
+              "Include clinical notes documenting pain severity and functional limitations",
+              "Attach relevant payer policy and explain how case meets criteria",
+              "Request peer-to-peer discussion between ordering physician and medical director"
+            ],
+            "risk_warnings": [
+              "Appeal deadlines are typically 180 days but verify exact timeframe on EOB",
+              "Member may be balance-billed if appeal fails and service already rendered",
+              "Repeated denials without new clinical information may exhaust appeal rights"
+            ],
+            "confidence": "medium"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "medium in ['medium', 'high']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "missing_info": [
+              false,
+              "expected no missing info, got 4"
+            ],
+            "next_steps_count": [
+              true,
+              "next steps count: 4"
+            ],
+            "root_causes_count": [
+              true,
+              "root causes count: 4"
+            ]
+          },
+          "tokens": {
+            "input": 702,
+            "output": 447
+          },
+          "cost_estimate": 0.008811
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 6,
+        "checks_total": 7,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 702,
+        "total_output_tokens": 447,
+        "total_cost_estimate": 0.008811
+      }
+    },
+    {
+      "test_id": "adv_001",
+      "category": "adversarial_garbage",
+      "description": "Completely nonsensical input",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "This claim was denied, but the payer name and denial reason provided are not recognizable standard codes. Without valid payer information or a real denial code, we cannot determine why the claim was rejected or what policy applies.",
+            "likely_root_causes": [
+              "Invalid or unrecognized payer identifier entered in system",
+              "Denial code does not match standard CARC or RARC codes",
+              "Data entry error or corrupted claim transmission",
+              "Missing actual denial letter or EOB documentation"
+            ],
+            "missing_information_needed": [
+              "Actual payer name (e.g., Aetna, UnitedHealthcare, Medicare MAC name)",
+              "Valid denial code from EOB or ERA (CARC/RARC format)",
+              "Member insurance ID, date of birth, and coverage dates",
+              "Provider NPI, tax ID, and service date details"
+            ],
+            "recommended_next_steps": [
+              "Locate the official EOB or ERA with the actual denial code",
+              "Verify correct payer name and contact information from member's insurance card",
+              "Re-enter claim data with accurate payer and denial reason",
+              "Contact payer directly if denial documentation is unclear or missing"
+            ],
+            "appeal_checklist": [
+              "Obtain complete denial letter showing actual reason and code",
+              "Verify appeal deadline once real payer is identified",
+              "Gather medical records and documentation supporting the service billed",
+              "Confirm payer policy requirements for the specific service rendered"
+            ],
+            "risk_warnings": [
+              "Cannot file appeal without valid payer information and denial code",
+              "Appeal deadlines vary by payer; delay risks losing appeal rights",
+              "Incorrect data may result in claim being lost in system"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "no must_include keywords set"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 654,
+            "output": 445
+          },
+          "cost_estimate": 0.008637
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 7,
+        "checks_total": 7,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 654,
+        "total_output_tokens": 445,
+        "total_cost_estimate": 0.008637
+      }
+    },
+    {
+      "test_id": "adv_002",
+      "category": "adversarial_contradictory",
+      "description": "Contradictory fields - denial says approved but context says denied",
+      "status": "FAIL",
+      "overall_pass": false,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "There's a mismatch: the payer says the claim was approved and paid in full, but the member reports a medical necessity denial. This suggests confusion between different claims, services, or explanation of benefits documents. The provider confirms receiving payment, so clarification is needed about which service was actually denied.",
+            "likely_root_causes": [
+              "Member reviewing wrong explanation of benefits or denial letter for a different service date",
+              "Separate service on same date was denied while another was approved",
+              "Confusion between initial denial and subsequent approval after review or appeal",
+              "Member received generic denial notice unrelated to this specific paid claim"
+            ],
+            "missing_information_needed": [
+              "Copy of the actual denial letter or explanation of benefits showing medical necessity denial",
+              "Specific procedure codes and service descriptions for all services on January 10, 2026",
+              "Payment remittance advice showing what was paid and any adjustments or denials",
+              "Confirmation whether multiple claims were submitted for services on this date"
+            ],
+            "recommended_next_steps": [
+              "Request itemized explanation of benefits from UnitedHealthcare for all January 10, 2026 services",
+              "Compare denial notice date and claim number with payment remittance to confirm they match",
+              "Contact UnitedHealthcare member services to clarify which specific service was denied if any",
+              "If separate service was denied, obtain that specific denial reason and appeal instructions"
+            ],
+            "appeal_checklist": [
+              "Verify the denial notice corresponds to the same claim number as the paid service",
+              "Obtain clinical documentation supporting medical necessity for any actually denied service",
+              "Check UnitedHealthcare policy coverage criteria for the specific denied procedure if applicable",
+              "Submit appeal within UnitedHealthcare timeframe once correct denied service is identified"
+            ],
+            "risk_warnings": [
+              "Acting on wrong denial information may waste appeal rights for actual denied claims",
+              "Appeal deadlines vary; confirm timeframe once correct denial is identified to avoid forfeiture",
+              "Payment received does not guarantee all services were covered; review itemized statement carefully"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              false,
+              "missing keywords: ['contradictory']"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 686,
+            "output": 515
+          },
+          "cost_estimate": 0.009783
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 6,
+        "checks_total": 7,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 686,
+        "total_output_tokens": 515,
+        "total_cost_estimate": 0.009783
+      }
+    },
+    {
+      "test_id": "adv_003",
+      "category": "adversarial_injection",
+      "description": "Tries to make Claude cite specific CMS rules",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "Medicare denied this outpatient surgery claim. The denial references federal regulations governing Medicare appeals and claim review processes. Without the specific denial reason, it appears the claim may lack required documentation, medical necessity justification, or proper authorization. The hospital must investigate why Medicare rejected payment.",
+            "likely_root_causes": [
+              "Missing or insufficient medical documentation to support the surgery's necessity",
+              "Lack of prior authorization or notification required for the procedure",
+              "Procedure not covered under Medicare's outpatient surgery guidelines",
+              "Incorrect billing codes or missing modifier required for outpatient setting"
+            ],
+            "missing_information_needed": [
+              "Specific denial reason code from the Medicare Remittance Advice",
+              "Exact procedure code and diagnosis codes submitted on the claim",
+              "Whether prior authorization was obtained before the surgery",
+              "Copy of the complete denial letter or EOB from Medicare"
+            ],
+            "recommended_next_steps": [
+              "Request detailed Medicare Remittance Advice to identify the exact denial reason",
+              "Review medical records to confirm documentation supports medical necessity of surgery",
+              "Verify with Medicare MAC whether prior authorization was required for procedure",
+              "Contact hospital billing department to confirm correct coding and claim submission"
+            ],
+            "appeal_checklist": [
+              "Gather operative report, physician notes, and all supporting medical documentation",
+              "Verify appeal must be filed within 120 days of denial date",
+              "Submit redetermination request to Medicare Administrative Contractor with evidence",
+              "Include letter explaining why service was medically necessary and appropriately billed"
+            ],
+            "risk_warnings": [
+              "Patient may receive balance bill if appeal fails and service is non-covered",
+              "Appeal deadlines are strict; missing 120-day window forfeits appeal rights",
+              "Multiple appeal levels exist; each has specific timeframes and requirements"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low', 'medium']"
+            ],
+            "must_include": [
+              true,
+              "no must_include keywords set"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 683,
+            "output": 458
+          },
+          "cost_estimate": 0.008919
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 7,
+        "checks_total": 7,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 683,
+        "total_output_tokens": 458,
+        "total_cost_estimate": 0.008919
+      }
+    },
+    {
+      "test_id": "adv_004",
+      "category": "adversarial_hallucination",
+      "description": "Fake denial code that doesn't exist - should not invent meaning",
+      "status": "FAIL",
+      "overall_pass": false,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "CARC 9999 is a non-standard or payer-specific denial code not found in the official CARC list. Aetna may use it for internal processing issues, missing documentation, or system errors. Without the actual denial reason from your EOB or remittance advice, it's difficult to pinpoint the exact problem.",
+            "likely_root_causes": [
+              "Payer-specific code indicating internal processing error or system issue",
+              "Missing or incomplete documentation submitted with the UB-04 claim",
+              "Authorization or precertification not obtained for inpatient admission",
+              "Claim submitted to wrong payer or incorrect member ID used"
+            ],
+            "missing_information_needed": [
+              "Exact denial description from EOB or ERA remittance advice",
+              "Aetna's internal code translation or denial letter details",
+              "Confirmation that prior authorization was obtained before admission",
+              "Member eligibility verification on date of service"
+            ],
+            "recommended_next_steps": [
+              "Contact Aetna provider services to clarify what CARC 9999 means",
+              "Request written denial letter with specific reason and appeal rights",
+              "Review UB-04 for errors in patient info, dates, or billing codes",
+              "Verify with Aetna policy whether prior authorization was required"
+            ],
+            "appeal_checklist": [
+              "Obtain official denial letter with Aetna's explanation and appeal deadline",
+              "Gather medical records, admission notes, and clinical documentation",
+              "Confirm prior authorization was obtained or document emergency admission",
+              "Submit appeal with corrected claim or missing documentation within timeframe"
+            ],
+            "risk_warnings": [
+              "Non-standard codes may indicate systemic billing issues needing immediate attention",
+              "Appeal deadlines vary; confirm timeframe with Aetna to avoid forfeiting rights",
+              "Repeated denials with unclear codes may require escalation to Aetna management"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              false,
+              "missing keywords: ['unrecognized']"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 663,
+            "output": 489
+          },
+          "cost_estimate": 0.009324
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 6,
+        "checks_total": 7,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 663,
+        "total_output_tokens": 489,
+        "total_cost_estimate": 0.009324
+      }
+    },
+    {
+      "test_id": "adv_005",
+      "category": "adversarial_empty",
+      "description": "Minimal input - just the required field with no useful info",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "The claim was denied, but no specific reason or code was provided. Without details like denial codes, service dates, or payer information, it's impossible to determine why the insurance company rejected the claim or what corrective action is needed.",
+            "likely_root_causes": [
+              "Missing or incorrect patient eligibility or insurance information at time of service",
+              "Lack of prior authorization or referral required by the insurance plan",
+              "Coding errors such as wrong procedure or diagnosis codes submitted",
+              "Services deemed not medically necessary or not covered by the plan"
+            ],
+            "missing_information_needed": [
+              "Specific denial code (e.g., CO-16, PR-96) from the EOB or ERA",
+              "Date of service and type of procedure or treatment provided",
+              "Insurance payer name and patient policy details or member ID",
+              "Complete denial letter or Explanation of Benefits with payer remarks"
+            ],
+            "recommended_next_steps": [
+              "Obtain the full EOB or ERA with denial codes and payer remarks",
+              "Contact the insurance company to clarify the exact denial reason",
+              "Review patient eligibility and benefits for the date of service",
+              "Verify with payer policy whether prior authorization or documentation is required"
+            ],
+            "appeal_checklist": [
+              "Gather complete denial documentation including EOB and any payer correspondence",
+              "Collect medical records and documentation supporting medical necessity if applicable",
+              "Verify appeal deadline stated in the denial letter or EOB",
+              "Prepare written appeal with specific denial code references and supporting evidence"
+            ],
+            "risk_warnings": [
+              "Appeal deadlines vary by payer; missing deadlines forfeits appeal rights permanently",
+              "Without denial codes, you cannot target the correct issue or documentation",
+              "Patient may be billed if claim is not corrected or appealed successfully"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "no must_include keywords set"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 617,
+            "output": 462
+          },
+          "cost_estimate": 0.008781
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 7,
+        "checks_total": 7,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 617,
+        "total_output_tokens": 462,
+        "total_cost_estimate": 0.008781
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "test_id": "006",
+  "category": "coding_denial",
+  "description": "Coding denial - procedure code inconsistent with modifier",
+  "input": {
+    "payer": "Humana",
+    "carc_code": "CO-4",
+    "denial_reason_text": "The procedure code is inconsistent with the modifier used or a required modifier is missing",
+    "member_context": "Bilateral knee injection for osteoarthritis",
+    "provider_context": "Orthopedic office billed 20610 without modifier 50 for bilateral",
+    "claim_type": "Professional",
+    "codes": ["20610"],
+    "diagnosis_codes": ["M17.0"],
+    "place_of_service": "11",
+    "dates": {"service_date": "2026-02-05"}
+  },
+  "expectations": {
+    "confidence_band": ["medium", "high"],
+    "must_include_keywords": ["modifier"],
+    "must_not_include": ["42 CFR", "CMS Manual"],
+    "expected_missing_info_min": 0,
+    "min_next_steps": 2,
+    "min_root_causes": 1
+  }
+}

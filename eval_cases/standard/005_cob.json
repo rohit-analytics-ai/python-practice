@@ -1,0 +1,26 @@
+{
+  "test_id": "005",
+  "category": "coordination_of_benefits",
+  "description": "COB denial - other insurance should be primary",
+  "input": {
+    "payer": "Blue Cross Blue Shield",
+    "carc_code": "OA-23",
+    "rarc_code": "N30",
+    "denial_reason_text": "Payment adjusted because charges are covered by another payer per coordination of benefits",
+    "member_context": "Member has dual coverage, spouse employer plan and own employer plan",
+    "provider_context": "Hospital submitted to BCBS but member has primary coverage through spouse employer",
+    "claim_type": "Outpatient",
+    "codes": ["99214"],
+    "diagnosis_codes": ["J06.9"],
+    "place_of_service": "11",
+    "dates": {"service_date": "2026-01-28"}
+  },
+  "expectations": {
+    "confidence_band": ["medium", "high"],
+    "must_include_keywords": ["coordination", "primary"],
+    "must_not_include": ["42 CFR", "CMS Manual"],
+    "expected_missing_info_min": 0,
+    "min_next_steps": 2,
+    "min_root_causes": 1
+  }
+}

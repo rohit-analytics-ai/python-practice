@@ -1,0 +1,12 @@
+{
+  "test_id": "adv_005",
+  "category": "adversarial_empty",
+  "description": "Minimal input - just the required field with no useful info",
+  "input": {
+    "carc_code": "CO-50"
+  },
+  "expectations": {
+    "confidence_band": ["low"],
+    "expected_missing_info_min": 3
+  }
+}

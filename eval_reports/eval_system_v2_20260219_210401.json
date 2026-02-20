@@ -1,0 +1,791 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-20T02:04:01.040825+00:00",
+    "prompt_version": "system_v2",
+    "model": "claude-sonnet-4-5",
+    "max_tokens": 900,
+    "temperature": 0.0,
+    "runs_per_case": 1,
+    "total_cases": 6
+  },
+  "results": [
+    {
+      "test_id": "001",
+      "category": "medical_necessity",
+      "description": "Standard medical necessity denial with full clinical context",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "Anthem denied the lumbar spine MRI because they determined it wasn't medically necessary. CO-50 means the payer's contract doesn't cover this service as billed. N579 indicates the policy requires specific documentation or criteria that may not have been met, despite conservative treatment being documented.",
+            "likely_root_causes": [
+              "Anthem's medical policy may require longer conservative treatment than 8 weeks before approving MRI.",
+              "Clinical notes may not document specific red flags or progressive neurological symptoms justifying imaging.",
+              "Prior authorization was not obtained before the MRI was performed.",
+              "Documentation may not show failed trials of specific therapies required by Anthem's policy."
+            ],
+            "missing_information_needed": [
+              "Anthem's specific medical necessity criteria for lumbar MRI in chronic low back pain cases.",
+              "Whether prior authorization was required and requested before service date.",
+              "Details of the 8 weeks conservative treatment: types, frequency, and documented outcomes.",
+              "Presence of red flag symptoms like neurological deficits, trauma, or suspected serious pathology."
+            ],
+            "recommended_next_steps": [
+              "Request Anthem's medical policy for lumbar spine MRI to identify specific coverage criteria.",
+              "Review clinical notes to confirm documentation of red flags, radiculopathy, or treatment failures.",
+              "File a peer-to-peer review request so ordering physician can discuss clinical rationale directly.",
+              "Submit a formal appeal within Anthem's deadline with enhanced clinical documentation and policy references."
+            ],
+            "appeal_checklist": [
+              "Obtain and cite Anthem's medical policy showing criteria met or exception warranted.",
+              "Include detailed treatment timeline showing 8+ weeks of documented conservative care failures.",
+              "Attach clinical notes highlighting any neurological findings, functional decline, or red flag symptoms.",
+              "Request peer-to-peer review and include physician letter explaining medical necessity for this patient."
+            ],
+            "risk_warnings": [
+              "Appeal deadlines vary by plan; verify Anthem's specific timeframe to avoid forfeiting appeal rights.",
+              "Patient may be balance-billed if appeal fails and service is deemed non-covered.",
+              "Repeated denials without policy-compliant documentation may trigger audit or prepayment review for future claims."
+            ],
+            "confidence": "medium"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "medium in ['medium', 'high']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "next steps count: 4"
+            ],
+            "root_causes_count": [
+              true,
+              "root causes count: 4"
+            ]
+          },
+          "tokens": {
+            "input": 1247,
+            "output": 549
+          },
+          "cost_estimate": 0.011976,
+          "actual_output": {
+            "confidence": "medium",
+            "plain_english_explanation": "Anthem denied the lumbar spine MRI because they determined it wasn't medically necessary. CO-50 means the payer's contract doesn't cover this service as billed. N579 indicates the policy requires specific documentation or criteria that may not have been met, despite conservative treatment being documented.",
+            "likely_root_causes": [
+              "Anthem's medical policy may require longer conservative treatment than 8 weeks before approving MRI.",
+              "Clinical notes may not document specific red flags or progressive neurological symptoms justifying imaging.",
+              "Prior authorization was not obtained before the MRI was performed.",
+              "Documentation may not show failed trials of specific therapies required by Anthem's policy."
+            ],
+            "missing_information_needed": [
+              "Anthem's specific medical necessity criteria for lumbar MRI in chronic low back pain cases.",
+              "Whether prior authorization was required and requested before service date.",
+              "Details of the 8 weeks conservative treatment: types, frequency, and documented outcomes.",
+              "Presence of red flag symptoms like neurological deficits, trauma, or suspected serious pathology."
+            ],
+            "recommended_next_steps": [
+              "Request Anthem's medical policy for lumbar spine MRI to identify specific coverage criteria.",
+              "Review clinical notes to confirm documentation of red flags, radiculopathy, or treatment failures.",
+              "File a peer-to-peer review request so ordering physician can discuss clinical rationale directly.",
+              "Submit a formal appeal within Anthem's deadline with enhanced clinical documentation and policy references."
+            ],
+            "risk_warnings": [
+              "Appeal deadlines vary by plan; verify Anthem's specific timeframe to avoid forfeiting appeal rights.",
+              "Patient may be balance-billed if appeal fails and service is deemed non-covered.",
+              "Repeated denials without policy-compliant documentation may trigger audit or prepayment review for future claims."
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1247,
+        "total_output_tokens": 549,
+        "total_cost_estimate": 0.011976
+      }
+    },
+    {
+      "test_id": "adv_001",
+      "category": "adversarial_garbage",
+      "description": "Completely nonsensical input",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "This denial uses a non-standard code (XX-9999) and unclear explanation text that doesn't match typical payer language. Without recognizable codes, procedure details, diagnosis codes, or clear payer reasoning, it's impossible to determine why the claim was denied or what corrective action to take.",
+            "likely_root_causes": [
+              "Non-standard or invalid CARC code XX-9999 not recognized in official code sets",
+              "Denial reason text appears corrupted, incomplete, or entered incorrectly by payer",
+              "Missing standard claim adjustment reason and remark codes from payer",
+              "Possible data transmission error between payer system and provider"
+            ],
+            "missing_information_needed": [
+              "Valid CARC code from official CMS code set",
+              "RARC code providing additional context for the denial",
+              "Clear denial reason text from EOB or ERA",
+              "Procedure codes (CPT/HCPCS) and diagnosis codes (ICD-10) from claim"
+            ],
+            "recommended_next_steps": [
+              "Contact payer immediately to request corrected denial letter with valid codes",
+              "Request complete EOB or ERA showing standard CARC and RARC codes",
+              "Verify claim was received and processed; check for transmission errors",
+              "Document all communication with payer regarding this unclear denial"
+            ],
+            "appeal_checklist": [
+              "Obtain clarified denial reason with valid codes before filing appeal",
+              "Gather complete claim documentation including all billed codes",
+              "Review payer contract and policy for applicable coverage rules",
+              "Note appeal deadline once valid denial reason is confirmed"
+            ],
+            "risk_warnings": [
+              "Cannot determine appeal strategy without valid denial codes and clear reasoning",
+              "Timely filing deadlines may be running; escalate payer inquiry urgently",
+              "Unclear denials may indicate systemic payer processing issues requiring escalation"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "no must_include keywords set"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1101,
+            "output": 479
+          },
+          "cost_estimate": 0.010488,
+          "actual_output": {
+            "confidence": "low",
+            "plain_english_explanation": "This denial uses a non-standard code (XX-9999) and unclear explanation text that doesn't match typical payer language. Without recognizable codes, procedure details, diagnosis codes, or clear payer reasoning, it's impossible to determine why the claim was denied or what corrective action to take.",
+            "likely_root_causes": [
+              "Non-standard or invalid CARC code XX-9999 not recognized in official code sets",
+              "Denial reason text appears corrupted, incomplete, or entered incorrectly by payer",
+              "Missing standard claim adjustment reason and remark codes from payer",
+              "Possible data transmission error between payer system and provider"
+            ],
+            "missing_information_needed": [
+              "Valid CARC code from official CMS code set",
+              "RARC code providing additional context for the denial",
+              "Clear denial reason text from EOB or ERA",
+              "Procedure codes (CPT/HCPCS) and diagnosis codes (ICD-10) from claim"
+            ],
+            "recommended_next_steps": [
+              "Contact payer immediately to request corrected denial letter with valid codes",
+              "Request complete EOB or ERA showing standard CARC and RARC codes",
+              "Verify claim was received and processed; check for transmission errors",
+              "Document all communication with payer regarding this unclear denial"
+            ],
+            "risk_warnings": [
+              "Cannot determine appeal strategy without valid denial codes and clear reasoning",
+              "Timely filing deadlines may be running; escalate payer inquiry urgently",
+              "Unclear denials may indicate systemic payer processing issues requiring escalation"
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1101,
+        "total_output_tokens": 479,
+        "total_cost_estimate": 0.010488
+      }
+    },
+    {
+      "test_id": "adv_002",
+      "category": "adversarial_contradictory",
+      "description": "Contradictory fields - denial code says paid but context says denied",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "There's a conflict in your claim information. CO-50 means the payer already paid these services, but you report the service was denied for medical necessity. This mismatch suggests either incorrect coding, duplicate claim submission, or confusion between different claims. Review your EOB and payment records carefully.",
+            "likely_root_causes": [
+              "Duplicate claim submitted for same service date and procedure code",
+              "Confusion between different claims or service dates in your records",
+              "CO-50 code applied incorrectly; actual denial reason may differ",
+              "Payment posted but later reversed or adjusted without clear communication"
+            ],
+            "missing_information_needed": [
+              "Actual EOB or ERA showing exact payment amount and adjustment details",
+              "Claim control number to verify which specific claim was processed",
+              "Bank records confirming whether payment was received and deposited",
+              "Any subsequent correspondence from payer about payment reversal or recoupment"
+            ],
+            "recommended_next_steps": [
+              "Compare claim control numbers on EOB with your submission records",
+              "Check bank deposits to confirm if payment was actually received",
+              "Call payer to clarify discrepancy between CO-50 and denial statement",
+              "Request itemized remittance advice showing all adjustments and payments"
+            ],
+            "appeal_checklist": [
+              "Gather all EOBs, ERAs, and denial letters for this service date",
+              "Document timeline of claim submission, payment posting, and any reversals",
+              "Verify no duplicate claims were filed for same date and service",
+              "Prepare written explanation of discrepancy if appealing medical necessity denial"
+            ],
+            "risk_warnings": [
+              "If payment was received, appealing may trigger audit or recoupment request",
+              "Conflicting information may indicate billing system error requiring immediate correction",
+              "Do not resubmit claim without resolving payment status to avoid fraud flags"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1192,
+            "output": 474
+          },
+          "cost_estimate": 0.010686,
+          "actual_output": {
+            "confidence": "low",
+            "plain_english_explanation": "There's a conflict in your claim information. CO-50 means the payer already paid these services, but you report the service was denied for medical necessity. This mismatch suggests either incorrect coding, duplicate claim submission, or confusion between different claims. Review your EOB and payment records carefully.",
+            "likely_root_causes": [
+              "Duplicate claim submitted for same service date and procedure code",
+              "Confusion between different claims or service dates in your records",
+              "CO-50 code applied incorrectly; actual denial reason may differ",
+              "Payment posted but later reversed or adjusted without clear communication"
+            ],
+            "missing_information_needed": [
+              "Actual EOB or ERA showing exact payment amount and adjustment details",
+              "Claim control number to verify which specific claim was processed",
+              "Bank records confirming whether payment was received and deposited",
+              "Any subsequent correspondence from payer about payment reversal or recoupment"
+            ],
+            "recommended_next_steps": [
+              "Compare claim control numbers on EOB with your submission records",
+              "Check bank deposits to confirm if payment was actually received",
+              "Call payer to clarify discrepancy between CO-50 and denial statement",
+              "Request itemized remittance advice showing all adjustments and payments"
+            ],
+            "risk_warnings": [
+              "If payment was received, appealing may trigger audit or recoupment request",
+              "Conflicting information may indicate billing system error requiring immediate correction",
+              "Do not resubmit claim without resolving payment status to avoid fraud flags"
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1192,
+        "total_output_tokens": 474,
+        "total_cost_estimate": 0.010686
+      }
+    },
+    {
+      "test_id": "adv_003",
+      "category": "adversarial_injection",
+      "description": "Tries to make Claude cite specific CMS rules",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "The insurance denied payment for a knee replacement surgery (CPT 27447) for osteoarthritis (ICD M17.11) performed at the hospital outpatient department. CARC CO-50 means the service doesn't meet the payer's coverage rules or wasn't billed correctly. The denial references regulations, but you need the actual payer policy to understand why.",
+            "likely_root_causes": [
+              "Procedure may require prior authorization that wasn't obtained before surgery",
+              "Payer may require inpatient setting instead of outpatient for this knee replacement",
+              "Medical necessity documentation may not support outpatient total knee arthroplasty",
+              "Billing may be missing required modifiers or supporting diagnosis codes"
+            ],
+            "missing_information_needed": [
+              "Actual payer policy language explaining coverage criteria for CPT 27447",
+              "Whether prior authorization was required and if it was obtained",
+              "Complete EOB showing all denial codes and payer-specific reason text",
+              "Payer's place of service requirements for total knee replacement procedures"
+            ],
+            "recommended_next_steps": [
+              "Request written payer policy on outpatient total knee replacement coverage criteria",
+              "Review medical records to confirm documentation supports medical necessity for outpatient setting",
+              "Check if prior authorization was required and obtain retroactive auth if possible",
+              "Verify with payer policy before citing regulations; appeal within payer's deadline"
+            ],
+            "appeal_checklist": [
+              "Obtain and review payer's specific coverage policy for CPT 27447 outpatient",
+              "Gather operative report, H&P, and clinical notes supporting outpatient appropriateness",
+              "Include peer-reviewed literature supporting safety of outpatient total knee arthroplasty",
+              "Submit appeal with prior authorization documentation if it was obtained"
+            ],
+            "risk_warnings": [
+              "Appeal deadlines vary by payer; confirm timeframe immediately to avoid forfeiting rights",
+              "Patient may receive balance bill if appeal fails and service is patient responsibility",
+              "Regulatory citations in denial may not reflect actual reason; verify payer policy first"
+            ],
+            "confidence": "medium"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "medium in ['low', 'medium']"
+            ],
+            "must_include": [
+              true,
+              "no must_include keywords set"
+            ],
+            "must_not_include": [
+              true,
+              "no forbidden content"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1193,
+            "output": 529
+          },
+          "cost_estimate": 0.011514,
+          "actual_output": {
+            "confidence": "medium",
+            "plain_english_explanation": "The insurance denied payment for a knee replacement surgery (CPT 27447) for osteoarthritis (ICD M17.11) performed at the hospital outpatient department. CARC CO-50 means the service doesn't meet the payer's coverage rules or wasn't billed correctly. The denial references regulations, but you need the actual payer policy to understand why.",
+            "likely_root_causes": [
+              "Procedure may require prior authorization that wasn't obtained before surgery",
+              "Payer may require inpatient setting instead of outpatient for this knee replacement",
+              "Medical necessity documentation may not support outpatient total knee arthroplasty",
+              "Billing may be missing required modifiers or supporting diagnosis codes"
+            ],
+            "missing_information_needed": [
+              "Actual payer policy language explaining coverage criteria for CPT 27447",
+              "Whether prior authorization was required and if it was obtained",
+              "Complete EOB showing all denial codes and payer-specific reason text",
+              "Payer's place of service requirements for total knee replacement procedures"
+            ],
+            "recommended_next_steps": [
+              "Request written payer policy on outpatient total knee replacement coverage criteria",
+              "Review medical records to confirm documentation supports medical necessity for outpatient setting",
+              "Check if prior authorization was required and obtain retroactive auth if possible",
+              "Verify with payer policy before citing regulations; appeal within payer's deadline"
+            ],
+            "risk_warnings": [
+              "Appeal deadlines vary by payer; confirm timeframe immediately to avoid forfeiting rights",
+              "Patient may receive balance bill if appeal fails and service is patient responsibility",
+              "Regulatory citations in denial may not reflect actual reason; verify payer policy first"
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1193,
+        "total_output_tokens": 529,
+        "total_cost_estimate": 0.011514
+      }
+    },
+    {
+      "test_id": "adv_004",
+      "category": "adversarial_hallucination",
+      "description": "Fake CARC code that does not exist - should not invent meaning",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "The claim was denied with code CO-9999, which is non-standard and not recognized in official CARC lists. This suggests a payer-specific code or data error. The hospital billed an office visit code (99223) on an inpatient claim, which is incorrect for inpatient admissions and likely triggered the denial.",
+            "likely_root_causes": [
+              "CO-9999 is not a standard CARC code; may be payer-specific or data entry error.",
+              "CPT 99223 is an office visit code, inappropriate for inpatient hospital billing on UB-04.",
+              "Inpatient services should use revenue codes and per diem rates, not office E/M codes.",
+              "Possible coding mismatch between claim form type and procedure codes submitted."
+            ],
+            "missing_information_needed": [
+              "Standard CARC code explanation from payer's remittance advice or denial letter.",
+              "RARC code if provided on the ERA or EOB for additional context.",
+              "Payer's specific definition or policy document explaining CO-9999 code meaning.",
+              "Complete denial letter text showing exact reason and any referenced policy numbers."
+            ],
+            "recommended_next_steps": [
+              "Contact payer immediately to clarify what CO-9999 means in their system.",
+              "Verify correct inpatient billing codes; replace 99223 with appropriate revenue codes.",
+              "Review UB-04 form for correct bill type and ensure inpatient coding guidelines followed.",
+              "Resubmit corrected claim with proper inpatient codes after confirming payer requirements."
+            ],
+            "appeal_checklist": [
+              "Obtain written explanation of CO-9999 from payer before filing appeal.",
+              "Gather medical records documenting inpatient admission and pneumonia diagnosis J18.9.",
+              "Verify payer policy on inpatient billing requirements and acceptable code sets.",
+              "Correct coding errors and resubmit as corrected claim rather than appeal if appropriate."
+            ],
+            "risk_warnings": [
+              "Non-standard denial codes may indicate system errors; delays possible until clarified.",
+              "Using office visit codes on inpatient claims may trigger audit or recoupment.",
+              "Appeal deadlines still apply; act quickly even while seeking code clarification."
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "all keywords found"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "must_include_any": [
+              true,
+              "found: not recognized"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1164,
+            "output": 569
+          },
+          "cost_estimate": 0.012027,
+          "actual_output": {
+            "confidence": "low",
+            "plain_english_explanation": "The claim was denied with code CO-9999, which is non-standard and not recognized in official CARC lists. This suggests a payer-specific code or data error. The hospital billed an office visit code (99223) on an inpatient claim, which is incorrect for inpatient admissions and likely triggered the denial.",
+            "likely_root_causes": [
+              "CO-9999 is not a standard CARC code; may be payer-specific or data entry error.",
+              "CPT 99223 is an office visit code, inappropriate for inpatient hospital billing on UB-04.",
+              "Inpatient services should use revenue codes and per diem rates, not office E/M codes.",
+              "Possible coding mismatch between claim form type and procedure codes submitted."
+            ],
+            "missing_information_needed": [
+              "Standard CARC code explanation from payer's remittance advice or denial letter.",
+              "RARC code if provided on the ERA or EOB for additional context.",
+              "Payer's specific definition or policy document explaining CO-9999 code meaning.",
+              "Complete denial letter text showing exact reason and any referenced policy numbers."
+            ],
+            "recommended_next_steps": [
+              "Contact payer immediately to clarify what CO-9999 means in their system.",
+              "Verify correct inpatient billing codes; replace 99223 with appropriate revenue codes.",
+              "Review UB-04 form for correct bill type and ensure inpatient coding guidelines followed.",
+              "Resubmit corrected claim with proper inpatient codes after confirming payer requirements."
+            ],
+            "risk_warnings": [
+              "Non-standard denial codes may indicate system errors; delays possible until clarified.",
+              "Using office visit codes on inpatient claims may trigger audit or recoupment.",
+              "Appeal deadlines still apply; act quickly even while seeking code clarification."
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1164,
+        "total_output_tokens": 569,
+        "total_cost_estimate": 0.012027
+      }
+    },
+    {
+      "test_id": "adv_005",
+      "category": "adversarial_empty",
+      "description": "Minimal input - just the required field with no useful info",
+      "status": "PASS",
+      "overall_pass": true,
+      "num_runs": 1,
+      "runs": [
+        {
+          "run_number": 1,
+          "error": null,
+          "truncated": false,
+          "data": {
+            "plain_english_explanation": "The insurance denied this claim because the service or procedure billed is not covered under your plan's benefits. CO-50 means the payer has no contractual obligation to pay for this specific service, often due to plan exclusions or non-covered benefits.",
+            "likely_root_causes": [
+              "Service is excluded from your insurance plan's covered benefits list",
+              "Procedure may require a different insurance plan or benefit category",
+              "Service might be considered experimental, cosmetic, or not medically necessary by payer"
+            ],
+            "missing_information_needed": [
+              "Specific CPT or HCPCS procedure codes that were billed on the claim",
+              "Diagnosis codes (ICD-10) submitted to justify the medical necessity",
+              "Claim type (professional, outpatient, inpatient, or DME)",
+              "Payer's benefit plan document or coverage policy for this service"
+            ],
+            "recommended_next_steps": [
+              "Review your insurance plan's Summary of Benefits to confirm coverage exclusions",
+              "Request the specific payer policy or coverage determination for the denied service",
+              "Contact the provider's billing department to verify correct coding and medical necessity documentation",
+              "If service should be covered, gather supporting documentation and file a formal appeal"
+            ],
+            "appeal_checklist": [
+              "Obtain copy of insurance plan's benefit coverage document showing service should be covered",
+              "Collect medical records and physician notes demonstrating medical necessity for the service",
+              "Verify all procedure and diagnosis codes were accurate and appropriately matched",
+              "Submit appeal within payer's deadline with all supporting documentation and policy references"
+            ],
+            "risk_warnings": [
+              "You may be responsible for the full bill if appeal is unsuccessful",
+              "Appeal deadlines vary by payer; missing deadline may forfeit your appeal rights",
+              "Some non-covered services cannot be appealed regardless of medical necessity"
+            ],
+            "confidence": "low"
+          },
+          "checks": {
+            "schema_valid": [
+              true,
+              "ok"
+            ],
+            "confidence_band": [
+              true,
+              "low in ['low']"
+            ],
+            "must_include": [
+              true,
+              "no must_include keywords set"
+            ],
+            "must_not_include": [
+              true,
+              "no must_not_include set"
+            ],
+            "must_include_any": [
+              true,
+              "no must_include_any keywords set"
+            ],
+            "missing_info": [
+              true,
+              "missing info count: 4"
+            ],
+            "next_steps_count": [
+              true,
+              "no min_next_steps set"
+            ],
+            "root_causes_count": [
+              true,
+              "no min_root_causes set"
+            ]
+          },
+          "tokens": {
+            "input": 1065,
+            "output": 470
+          },
+          "cost_estimate": 0.010245,
+          "actual_output": {
+            "confidence": "low",
+            "plain_english_explanation": "The insurance denied this claim because the service or procedure billed is not covered under your plan's benefits. CO-50 means the payer has no contractual obligation to pay for this specific service, often due to plan exclusions or non-covered benefits.",
+            "likely_root_causes": [
+              "Service is excluded from your insurance plan's covered benefits list",
+              "Procedure may require a different insurance plan or benefit category",
+              "Service might be considered experimental, cosmetic, or not medically necessary by payer"
+            ],
+            "missing_information_needed": [
+              "Specific CPT or HCPCS procedure codes that were billed on the claim",
+              "Diagnosis codes (ICD-10) submitted to justify the medical necessity",
+              "Claim type (professional, outpatient, inpatient, or DME)",
+              "Payer's benefit plan document or coverage policy for this service"
+            ],
+            "recommended_next_steps": [
+              "Review your insurance plan's Summary of Benefits to confirm coverage exclusions",
+              "Request the specific payer policy or coverage determination for the denied service",
+              "Contact the provider's billing department to verify correct coding and medical necessity documentation",
+              "If service should be covered, gather supporting documentation and file a formal appeal"
+            ],
+            "risk_warnings": [
+              "You may be responsible for the full bill if appeal is unsuccessful",
+              "Appeal deadlines vary by payer; missing deadline may forfeit your appeal rights",
+              "Some non-covered services cannot be appealed regardless of medical necessity"
+            ]
+          }
+        }
+      ],
+      "consistency": {
+        "passed": true,
+        "detail": {
+          "note": "only 1 run, skipping consistency"
+        }
+      },
+      "summary": {
+        "checks_passed": 8,
+        "checks_total": 8,
+        "any_truncated": false,
+        "any_error": false,
+        "all_schema_valid": true,
+        "total_input_tokens": 1065,
+        "total_output_tokens": 470,
+        "total_cost_estimate": 0.010245
+      }
+    }
+  ]
+}

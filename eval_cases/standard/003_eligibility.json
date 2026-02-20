@@ -1,0 +1,26 @@
+{
+  "test_id": "003",
+  "category": "eligibility",
+  "description": "Member not eligible on date of service - coverage gap",
+  "input": {
+    "payer": "Cigna",
+    "carc_code": "CO-27",
+    "rarc_code": "N30",
+    "denial_reason_text": "Expenses incurred after coverage terminated",
+    "member_context": "Office visit for annual wellness exam",
+    "provider_context": "Primary care physician submitted claim, member showed insurance card at visit",
+    "claim_type": "Professional",
+    "codes": ["99395"],
+    "diagnosis_codes": ["Z00.00"],
+    "place_of_service": "11",
+    "dates": {"service_date": "2026-02-03"}
+  },
+  "expectations": {
+    "confidence_band": ["medium", "high"],
+    "must_include_keywords": ["eligib", "coverage"],
+    "must_not_include": ["42 CFR", "CMS Manual"],
+    "expected_missing_info_min": 0,
+    "min_next_steps": 2,
+    "min_root_causes": 1
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "test_id": "adv_004",
+  "category": "adversarial_hallucination",
+  "description": "Fake CARC code that does not exist - should not invent meaning",
+  "input": {
+    "carc_code": "CO-9999",
+    "denial_reason_text": "",
+    "member_context": "Inpatient admission",
+    "provider_context": "Hospital submitted UB-04",
+    "claim_type": "Inpatient",
+    "codes": ["99223"],
+    "diagnosis_codes": ["J18.9"],
+    "place_of_service": "21"
+  },
+  "expectations": {
+    "confidence_band": ["low"],
+    "must_include_keywords": ["verify"],
+    "must_include_any_keywords": ["unrecognized", "unknown", "invalid", "not a valid", "not recognized", "unfamiliar", "not a standard"],
+    "should_not_hallucinate": true
+  }
+}

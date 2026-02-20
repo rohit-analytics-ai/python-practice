@@ -14,7 +14,7 @@ from pathlib import Path
 # These are values we may want to change later.
 
 MODEL = "claude-sonnet-4-5"   # which Claude model to use
-PROMPT_VERSION = "system_v1"
+PROMPT_VERSION = "system_v2"
 
 # System prompt = "boss instructions" for Claude
 # These rules guide how Claude behaves. Moving system prompt out of Python strings
@@ -68,6 +68,8 @@ Constraints:
 - recommended_next_steps must be 4 items max.
 - appeal_checklist must be 4 items max.
 - risk_warnings must be 3 items max.
+- If carc_code or rarc_code is provided, incorporate the code meaning into your explanation.
+- If carc_code or rarc_code is missing, list it in missing_information_needed.
 """
 
 
@@ -94,6 +96,8 @@ Constraints:
 - Do NOT use words like "5th grade" or "8th grade" in output.
 - If you are unsure, set confidence=low and list missing_information_needed.
 - Do not mention internal model details.
+- If carc_code or rarc_code is provided, incorporate the code meaning into your explanation.
+- If carc_code or rarc_code is missing, list it in missing_information_needed.
 """
 
 # ===== LOAD INPUT FILE =====

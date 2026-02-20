@@ -1,0 +1,27 @@
+{
+  "test_id": "007",
+  "category": "medicare_specific",
+  "description": "Medicare denial - should mention MAC/state variability",
+  "input": {
+    "payer": "Medicare Part B",
+    "carc_code": "CO-50",
+    "rarc_code": "N386",
+    "denial_reason_text": "Service does not meet Medicare medical necessity criteria per local coverage determination",
+    "member_context": "Power wheelchair request for homebound elderly patient with mobility limitations",
+    "provider_context": "DME supplier submitted claim with physician face-to-face encounter notes",
+    "claim_type": "DME",
+    "codes": ["K0856"],
+    "diagnosis_codes": ["M62.81", "Z74.09"],
+    "place_of_service": "12",
+    "dates": {"service_date": "2026-01-10"}
+  },
+  "expectations": {
+    "confidence_band": ["medium", "high"],
+    "must_include_keywords": ["medicare"],
+    "must_include_any_keywords": ["MAC", "local coverage", "LCD", "varies", "jurisdiction", "contractor"],
+    "must_not_include": ["42 CFR", "CMS Manual"],
+    "expected_missing_info_min": 0,
+    "min_next_steps": 2,
+    "min_root_causes": 1
+  }
+}

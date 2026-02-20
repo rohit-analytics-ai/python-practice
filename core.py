@@ -36,25 +36,45 @@ logger = logging.getLogger("denial_explainer")
 
 
 # ===== Input validation =====
-# Start strict on minimum viable fields; expand later as we add CARC/RARC and plan types.
-REQUIRED_INPUT_KEYS = {"denial_code_or_reason"}  # minimum viable
+# Expanded for CARC/RARC and plan types.
+REQUIRED_INPUT_KEYS = {"carc_code"}
 
+OPTIONAL_INPUT_KEYS = {
+    "rarc_code": str,
+    "denial_reason_text": str,
+    "payer": str,
+    "member_context": str,
+    "provider_context": str,
+    "claim_type": str,
+    "codes": list,
+    "diagnosis_codes": list,
+    "place_of_service": str,
+    "dates": dict,
+}
 
-def validate_input(payload: Any) -> List[str]:
-    """
-    Validate user input payload before sending to the model.
+VALID_CLAIM_TYPES = {"professional", "outpatient", "inpatient", "dme"}
 
-    Returns: list of error strings (empty list means valid)
-    """
-    errors: List[str] = []
-
+def validate_input(payload: dict) -> list:
+    errors = []
     if not isinstance(payload, dict):
-        errors.append("Input must be a JSON object (dictionary).")
-        return errors
+        return ["Input must be a JSON object"]
 
-    missing = REQUIRED_INPUT_KEYS - set(payload.keys())
-    if missing:
-        errors.append(f"Missing required fields: {sorted(missing)}")
+    # Accept old or new format (backward compat during migration)
+    has_new = "carc_code" in payload
+    has_old = "denial_code_or_reason" in payload
+
+    if not has_new and not has_old:
+        errors.append("Missing required field: carc_code (or legacy denial_code_or_reason)")
+
+    # Type check optional fields if present
+    for key, expected_type in OPTIONAL_INPUT_KEYS.items():
+        if key in payload and not isinstance(payload[key], expected_type):
+            errors.append(f"{key} should be {expected_type.__name__}, got {type(payload[key]).__name__}")
+
+    # Validate claim_type if present
+    if "claim_type" in payload:
+        if payload["claim_type"].lower() not in VALID_CLAIM_TYPES:
+            errors.append(f"claim_type should be one of {VALID_CLAIM_TYPES}")
 
     return errors
 
