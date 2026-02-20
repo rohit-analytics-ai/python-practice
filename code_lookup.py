@@ -169,43 +169,31 @@ def lookup_rarc(raw_code: str) -> dict:
 # Enrich input payload
 # ---------------------------------------------------------------------------
 def enrich_input(payload: dict) -> dict:
-    """
-    Take a denial input dict and add code lookup results.
-    Adds _enrichment dict with CARC/RARC descriptions and guidance.
-    Does NOT modify the original payload — returns a new dict.
-
-    This enriched dict gets passed to build_user_prompt() so Claude
-    receives the official code meanings instead of having to guess.
-    """
-    enriched = dict(payload)  # shallow copy
+    enriched = dict(payload)
     enrichment = {}
+    ui_data = {}
 
-    # CARC lookup
     carc_raw = payload.get("carc_code", "")
     if carc_raw:
         carc_info = lookup_carc(carc_raw)
-        enrichment["carc_lookup"] = carc_info
-
+        ui_data["carc_lookup"] = carc_info
         if carc_info.get("found"):
             enrichment["carc_official_description"] = carc_info["description"]
-            enrichment["carc_category"] = carc_info["category"]
             enrichment["carc_appeal_guidance"] = carc_info["appeal_guidance"]
-            if carc_info.get("group_description"):
-                enrichment["carc_group_meaning"] = carc_info["group_description"]
 
-    # RARC lookup
     rarc_raw = payload.get("rarc_code", "")
     if rarc_raw:
         rarc_info = lookup_rarc(rarc_raw)
-        enrichment["rarc_lookup"] = rarc_info
-
+        ui_data["rarc_lookup"] = rarc_info
         if rarc_info.get("found"):
             enrichment["rarc_official_description"] = rarc_info["description"]
-            enrichment["rarc_category"] = rarc_info["category"]
+            if rarc_info.get("action_hint"):
+                enrichment["rarc_action_hint"] = rarc_info["action_hint"]
 
-    # Add enrichment to payload
     if enrichment:
         enriched["_code_enrichment"] = enrichment
+    if ui_data:
+        enriched["_ui_lookup"] = ui_data
 
     return enriched
 

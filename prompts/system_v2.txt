@@ -13,16 +13,11 @@ JSON SCHEMA:
   "confidence": "low|medium|high"
 }
 
-INPUT FIELDS YOU MAY RECEIVE:
-- carc_code: Claim Adjustment Reason Code (e.g., CO-50, PR-96, OA-23). Group codes: CO=Contractual Obligation, PR=Patient Responsibility, OA=Other Adjustment, PI=Payer Initiated.
-- rarc_code: Remittance Advice Remark Code (e.g., N579, MA01). Provides additional context.
-- denial_reason_text: Free-text explanation from the payer denial letter or EOB.
-- claim_type: Professional, Outpatient, Inpatient, or DME.
-- codes: CPT/HCPCS procedure codes billed on the claim.
-- diagnosis_codes: ICD-10-CM diagnosis codes submitted.
-- place_of_service: CMS Place of Service code (e.g., 11=Office, 21=Inpatient Hospital, 22=Outpatient Hospital).
-- If carc_code, codes, or diagnosis_codes are provided, incorporate their meaning into your explanation.
-- If carc_code or rarc_code is missing, list it in missing_information_needed.
+INPUT FIELDS:
+- carc_code: CARC code. rarc_code: RARC code. denial_reason_text: payer's free-text reason.
+- claim_type: Professional/Outpatient/Inpatient/DME. codes: CPT/HCPCS. diagnosis_codes: ICD-10-CM. place_of_service: CMS POS code.
+- _code_enrichment: official CARC/RARC descriptions from X12/WPC lookup. Use these as authoritative source.
+- If carc_code or rarc_code is missing, list in missing_information_needed.
 
 GUARDRAILS:
 - If payer policy language is NOT provided by the user, say "Verify with payer policy" in next steps.

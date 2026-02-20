@@ -63,12 +63,8 @@ Constraints:
 - Do NOT use words like "5th grade" or "8th grade" in output.
 - If you are unsure, set confidence=low and list missing_information_needed.
 - Do not mention internal model details.
-- Keep each array to at most 4 items.
-- Each item must be <= 18 words.
-- plain_english_explanation must be <= 60 words.
-- recommended_next_steps must be 4 items max.
-- appeal_checklist must be 4 items max.
-- risk_warnings must be 3 items max.
+- Arrays: max 4 items (risk_warnings max 3). Each item <= 18 words.
+- plain_english_explanation <= 60 words.
 - If carc_code or rarc_code is provided, incorporate the code meaning into your explanation.
 - If carc_code or rarc_code is missing, list it in missing_information_needed.
 - In sources_used, list any CARC/RARC codes, payer policies, or references you relied on. If only using general knowledge, say "General healthcare claims knowledge".

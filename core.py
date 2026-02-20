@@ -217,7 +217,13 @@ def call_claude_with_retry(
             kwargs = dict(
                 model=model,
                 max_tokens=max_tokens,
-                system=system_prompt,
+                system=[
+                    {
+                        "type": "text",
+                        "text": system_prompt,
+                        "cache_control": {"type": "ephemeral"}
+                    }
+                ],
                 messages=[{"role": "user", "content": user_prompt}],
             )
             # Some SDKs support temperature; keep optional to avoid breakage.

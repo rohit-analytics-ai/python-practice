@@ -566,7 +566,7 @@ if st.session_state.last_result:
         else:
             st.success("Severity: LOW")
 
-        enrichment = last.get("enriched_input", {}).get("_code_enrichment", {})
+        enrichment = last.get("enriched_input", {}).get("_ui_lookup", {})
         if enrichment:
             st.subheader("Code Lookup (Grounding Sources)")
             carc = enrichment.get("carc_lookup", {})
@@ -579,6 +579,8 @@ if st.session_state.last_result:
             rarc = enrichment.get("rarc_lookup", {})
             if rarc.get("found"):
                 st.write(f"**RARC {rarc['code']}:** {rarc['description']}")
+                if rarc.get("action_hint"):
+                    st.write(f"**Action:** {rarc['action_hint']}")
             elif rarc.get("raw_input"):
                 st.warning(f"RARC code not found in lookup table: {rarc.get('raw_input', 'N/A')}")
 
@@ -588,7 +590,7 @@ if st.session_state.last_result:
             for s in sources:
                 st.write(f"- {s}")
 
-                
+
         st.subheader("Missing Information Needed")
         if missing:
             st.warning("More info is needed to increase confidence:")
@@ -629,7 +631,7 @@ if st.session_state.last_result:
             comp_a, comp_b = st.columns(2)
             with comp_a:
                 st.markdown("**Denial A**")
-                enr_a = enriched_compare.get("A", {}).get("_code_enrichment", {})
+                enr_a = enriched_compare.get("A", {}).get("_ui_lookup", {})
                 if enr_a:
                     carc = enr_a.get("carc_lookup", {})
                     if carc.get("found"):
@@ -638,9 +640,11 @@ if st.session_state.last_result:
                     rarc = enr_a.get("rarc_lookup", {})
                     if rarc.get("found"):
                         st.write(f"**RARC {rarc['code']}:** {rarc['description']}")
+                        if rarc.get("action_hint"):
+                            st.write(f"**Action:** {rarc['action_hint']}")
             with comp_b:
                 st.markdown("**Denial B**")
-                enr_b = enriched_compare.get("B", {}).get("_code_enrichment", {})
+                enr_b = enriched_compare.get("B", {}).get("_ui_lookup", {})
                 if enr_b:
                     carc = enr_b.get("carc_lookup", {})
                     if carc.get("found"):
@@ -649,6 +653,8 @@ if st.session_state.last_result:
                     rarc = enr_b.get("rarc_lookup", {})
                     if rarc.get("found"):
                         st.write(f"**RARC {rarc['code']}:** {rarc['description']}")
+                        if rarc.get("action_hint"):
+                            st.write(f"**Action:** {rarc['action_hint']}")
 
     # Feedback -- single place, always rendered from session_state
     render_feedback(last)
